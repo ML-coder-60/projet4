@@ -1,6 +1,8 @@
+import re
+import datetime
 
 
-class Checkinput:
+class Util:
 
     @classmethod
     def check_input_by_regex(cls, message, regex):
@@ -19,3 +21,25 @@ class Checkinput:
                 continue
             else:
                 return input_str
+
+    @classmethod
+    def check_date(cls, message, param):
+        """
+         check input date if ok return date
+         else  ask again date
+        """
+        while True:
+            try:
+                day, month, year = input(message).split(param)
+                return str(datetime.datetime(int(year), int(month), int(day)).strftime("%d/%m/%Y"))
+            except ValueError:
+                continue
+
+    @classmethod
+    def choice_int(cls, message):
+        """ Check response is valid"""
+        while True:
+            try:
+                return int(input(message))
+            except ValueError:
+                continue
