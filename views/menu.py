@@ -1,6 +1,5 @@
 """Class Menu"""
 # coding: utf-8
-from views.player import Player
 
 
 class Menu:
@@ -22,6 +21,7 @@ class Menu:
             "=== Tournament Management ===",
             "[8]  Create Tournament",
             "[9]  Load Tournament",
+            "[13] View Tournament",
             "[99] Menu"],
             "createplayer": [
             "=== Create Player ==="],
@@ -35,7 +35,11 @@ class Menu:
             "notfoundplayer": [
             "=== Player Not Found ===",
             " ",
-            "List of Players Available"]
+            "List of Players Available"],
+            "newtournament": ["===  New Tournament ==="],
+            "confirm_player": ["""=== Validate Player """],
+            "player_already_selected": ["Player Already Selected in tournament"],
+            "player_for_tournament": ["Enter the 8 players for the new tournament"]
             }
 
     def __init__(self):
@@ -49,7 +53,31 @@ class Menu:
             s = s + text + "\n"
         print(s)
 
-    def display_player(self, data):
-        """ Display Player  return 1 =>  Player Management """
-        [print(Player(x)) for x in data]
-        return 1
+    @staticmethod
+    def display_player(player):
+        """ Display Player  """
+        s = "Last Name  : "+player.Last_Name+"\n"
+        s += "First Name : "+player.First_Name+"\n"
+        s += "Date Birth : "+player.Date_Birth+"\n"
+        s += "Gender     : "+player.Gender+"\n"
+        s += "Ranking    : "+player.Ranking+"\n"
+        print(s)
+
+    @staticmethod
+    def display_tournament(tournament):
+        """ Display Tournament """
+        s = "========\t\tTournament Description\t\t========\n"
+        s += "Name : "+tournament.Name
+        s += "\t\t\t\tLocation : "+tournament.Location+"\n"
+        s += "Start date : "+tournament.Start_date
+        s += "\t\t\tEnd date : "+tournament.End_date+"\n"
+        s += "Nbr of rounds : "+str(tournament.Nbr_of_turn)
+        s += "\t\t\tType of game : "+tournament.Time_control+"\n"
+        s += "Description : "+tournament.Description+"\n"
+        s += "=========================================================="
+        print(s)
+
+    @staticmethod
+    def display_last_first_name(player):
+        s = "Last Name  : "+player.Last_Name+"\t\tFirst Name : "+player.First_Name
+        print(s)

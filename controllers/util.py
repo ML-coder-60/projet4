@@ -1,4 +1,7 @@
+"""Class Util"""
+# coding: utf-8
 import re
+import os
 import datetime
 
 
@@ -40,6 +43,12 @@ class Util:
         """ Check response is valid"""
         while True:
             try:
-                return int(input(message))
+                result = int(input(message))
+                cls.clean()
+                return result
             except ValueError:
                 continue
+
+    @staticmethod
+    def clean():
+        os.system('cls' if os.name == 'nt' else 'clear')
