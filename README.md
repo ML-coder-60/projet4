@@ -10,7 +10,8 @@ _Version 0.1_
         - Select by Rank
         - check input data create new players
 
-_Version 0.2
+ Version 0.2
+
     Add Create Tournaments
         - save/load tournaments
         - Add players
