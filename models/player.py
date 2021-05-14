@@ -53,7 +53,7 @@ class Players:
         """ Update rank for player with last_name """
         for player in self.players:
             if player.last_name == last_name:
-                player.Ranking = rank
+                player.ranking = rank
         self.save_player()
         return self.players
 

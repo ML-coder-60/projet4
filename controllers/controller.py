@@ -99,6 +99,7 @@ class Controller:
             new_rank = Util().check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
             Players().update_rank_player_by_last_name(name_player, new_rank)
             Menu().display_menu('editplayer')
+            player = Players().find_player_by_last_name(name_player)
             Menu().display_player(player)
             return 1
         else:
