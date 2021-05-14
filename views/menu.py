@@ -27,7 +27,6 @@ class Menu:
             "=== Create Player ==="],
             "confircreateplayer": [
             "=== Create Player ===",
-            "[10] Save new Player And Return Menu ",
             "[6] Create new Player",
             "[1] Player Management"],
             "editplayer": ["=== Edit Player ==="""],
@@ -39,7 +38,17 @@ class Menu:
             "newtournament": ["===  New Tournament ==="],
             "confirm_player": ["""=== Validate Player """],
             "player_already_selected": ["Player Already Selected in tournament"],
-            "player_for_tournament": ["Enter the 8 players for the new tournament"]
+            "player_for_tournament": ["Enter the 8 players for the new tournament"],
+            "Start_first_turn": [
+            "=========================================================",
+            "[14] Start round 1",
+            "[2]  Tournament Management",
+            "[99] Menu"],
+            "New_round": [
+                "=========================================================",
+                "[14] Start new round",
+                "[2]  Tournament Management",
+                "[99] Menu"],
             }
 
     def __init__(self):
@@ -56,28 +65,49 @@ class Menu:
     @staticmethod
     def display_player(player):
         """ Display Player  """
-        s = "Last Name  : "+player.Last_Name+"\n"
-        s += "First Name : "+player.First_Name+"\n"
-        s += "Date Birth : "+player.Date_Birth+"\n"
-        s += "Gender     : "+player.Gender+"\n"
-        s += "Ranking    : "+player.Ranking+"\n"
+        s = "Last Name  : "+player.last_name+"\n"
+        s += "First Name : "+player.first_name+"\n"
+        s += "Date Birth : "+player.date_birth+"\n"
+        s += "Gender     : "+player.gender+"\n"
+        s += "Ranking    : "+player.ranking+"\n"
         print(s)
 
     @staticmethod
     def display_tournament(tournament):
+        print(tournament)
         """ Display Tournament """
-        s = "========\t\tTournament Description\t\t========\n"
-        s += "Name : "+tournament.Name
-        s += "\t\t\t\tLocation : "+tournament.Location+"\n"
-        s += "Start date : "+tournament.Start_date
-        s += "\t\t\tEnd date : "+tournament.End_date+"\n"
-        s += "Nbr of rounds : "+str(tournament.Nbr_of_turn)
-        s += "\t\t\tType of game : "+tournament.Time_control+"\n"
-        s += "Description : "+tournament.Description+"\n"
-        s += "=========================================================="
+        s = "========\tTournament Description\t========\n"
+        s += "Name : \t\t\t"+tournament.name+"\n"
+        s += "Location : \t\t\t"+tournament.location+"\n"
+        s += "Start date : \t\t\t"+tournament.start_date+"\n"
+        s += "End date : \t\t\t"+tournament.end_date+"\n"
+        s += "Nbr of rounds : \t\t"+str(tournament.nbr_of_turn)+"\n"
+        s += "Type of game : \t\t\t"+tournament.time_control+"\n"
+        s += "Description : \t\t\t"+tournament.description+"\n"
+        s += "========================================================="
         print(s)
 
     @staticmethod
-    def display_last_first_name(player):
-        s = "Last Name  : "+player.Last_Name+"\t\tFirst Name : "+player.First_Name
-        print(s)
+    def display_match(tournament, players):
+        turns = tournament.rounds
+        for turn in turns:
+            pair = turn['pairs']
+            print(pair)
+            s = "=================\t"+turn['name']+"\t\t=================\n\n"
+            s += "Match 1:   Player : " + players[pair[0][0][0]].last_name
+            s += "\t\t\tpoint : "+str(pair[0][0][1])+"\n"
+            s += "           Player : " +  players[pair[0][1][0]].last_name
+            s += "\t\t\tpoint : "+str(pair[0][1][1])+"\n"
+            s += "Match 2:   Player : " + players[pair[1][0][0]].last_name
+            s += "\t\t\tpoint : "+str(pair[1][0][1])+"\n"
+            s += "           Player : " + players[pair[1][1][0]].last_name
+            s += "\t\t\tpoint : "+str(pair[1][1][1])+"\n"
+            s += "Match 3:   Player : " + players[pair[2][0][0]].last_name
+            s += "\t\t\tpoint : "+str(pair[2][0][1])+"\n"
+            s += "           Player : " + players[pair[2][1][0]].last_name
+            s += "\t\t\tpoint : " + str(pair[2][1][1])+"\n"
+            s += "Match 4:   Player : " + players[pair[3][0][0]].last_name
+            s += "\t\t\tpoint : " + str(pair[3][0][1]) + "\n"
+            s += "           Player : " + players[pair[3][1][0]].last_name
+            s += "\t\t\tpoint : "+str(pair[3][1][1])+"\n"
+            print(s)

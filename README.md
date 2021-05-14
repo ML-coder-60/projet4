@@ -9,3 +9,13 @@ _Version 0.1_
         - Select by First Name
         - Select by Rank
         - check input data create new players
+
+_Version 0.2
+    Add Create Tournaments
+        - save/load tournaments
+        - Add players
+        - Create First Round
+        - Enter result 
+        - enter the results for the first round 
+        
+

@@ -17,7 +17,7 @@ class TinyDBStore:
         self._db_file = os.path.join(self._db_directory, self.DB_REP, self.DB_FILE)
         self._db = TinyDB(self._db_file)
 
-    def save_data(self, data, table):
+    def __save_data(self, data, table):
         """
             select table ,clean data end backup data in table
         """
@@ -31,17 +31,13 @@ class TinyDBStore:
         result = data_table.all()
         return result
 
+    def save_player(self, data):
+        """ Save data in table player"""
+        self.__save_data(data, 'player')
+
+    def save_tournament(self, data):
+        """ Save data in table tournament"""
+        self.__save_data(data, 'tournament')
+
     def close(self):
         self._db.close()
-
-
-def main():
-    """ check backup/read table test """
-    players = [{'name': 'j1', 'age': 27}, {'name': 'j3', 'age': 7}, {'name': 'j5', 'age': 12}]
-    TinyDBStore().save_data(players, 'test')
-    print(TinyDBStore().load_data('test'))
-
-
-if __name__ == "__main__":
-    # execute only if run as a script
-    main()
