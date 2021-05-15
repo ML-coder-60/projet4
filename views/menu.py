@@ -65,11 +65,8 @@ class Menu:
     @staticmethod
     def display_player(player):
         """ Display Player  """
-        s = "Last Name  : "+player.last_name+"\n"
-        s += "First Name : "+player.first_name+"\n"
-        s += "Date Birth : "+player.date_birth+"\n"
-        s += "Gender     : "+player.gender+"\n"
-        s += "Ranking    : "+player.ranking+"\n"
+        s = "Last Name  : "+player.last_name+"\t\tFirst Name : "+player.first_name+" ("+player.gender+")\n"
+        s += "Date Birth : "+player.date_birth+"\t\tRanking  ELO  : "+player.ranking+"\n"
         print(s)
 
     @staticmethod
