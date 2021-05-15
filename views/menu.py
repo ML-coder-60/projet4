@@ -66,7 +66,7 @@ class Menu:
     def display_player(player):
         """ Display Player  """
         s = "Last Name  : "+player.last_name+"\t\tFirst Name : "+player.first_name+" ("+player.gender+")\n"
-        s += "Date Birth : "+player.date_birth+"\t\tRanking  ELO  : "+player.ranking+"\n"
+        s += "Date Birth : "+player.date_birth+"\t\tRanking  Elo : "+player.ranking+"\n"
         print(s)
 
     @staticmethod
@@ -88,23 +88,12 @@ class Menu:
     def display_match(tournament, players):
         turns = tournament.rounds
         for turn in turns:
-            pair = turn['pairs']
-            print(pair)
+            pairs = turn['pairs']
             s = "=================\t"+turn['name']+"\t\t=================\n\n"
-            s += "Match 1:   Player : " + players[pair[0][0][0]].last_name
-            s += "\t\t\tpoint : "+str(pair[0][0][1])+"\n"
-            s += "           Player : " +  players[pair[0][1][0]].last_name
-            s += "\t\t\tpoint : "+str(pair[0][1][1])+"\n"
-            s += "Match 2:   Player : " + players[pair[1][0][0]].last_name
-            s += "\t\t\tpoint : "+str(pair[1][0][1])+"\n"
-            s += "           Player : " + players[pair[1][1][0]].last_name
-            s += "\t\t\tpoint : "+str(pair[1][1][1])+"\n"
-            s += "Match 3:   Player : " + players[pair[2][0][0]].last_name
-            s += "\t\t\tpoint : "+str(pair[2][0][1])+"\n"
-            s += "           Player : " + players[pair[2][1][0]].last_name
-            s += "\t\t\tpoint : " + str(pair[2][1][1])+"\n"
-            s += "Match 4:   Player : " + players[pair[3][0][0]].last_name
-            s += "\t\t\tpoint : " + str(pair[3][0][1]) + "\n"
-            s += "           Player : " + players[pair[3][1][0]].last_name
-            s += "\t\t\tpoint : "+str(pair[3][1][1])+"\n"
+            for match in pairs:
+                s += "Match 1:   Player : " + players[match[0][0]].last_name + "\t\tElo(" + players[match[0][0]].ranking
+                s += ")  point : " + str(match[0][1]) + "\n"
+                s += "           Player : " + players[match[1][0]].last_name + "\t\tElo(" + players[match[1][0]].ranking
+                s += ")  point : " + str(match[1][1]) + "\n"
             print(s)
+

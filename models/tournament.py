@@ -1,7 +1,7 @@
 """Class Tournament"""
 # coding: utf-8
 from models.round import Round
-from models.player import Players
+from models.player import Players, Player
 from models.tinyDBStore import TinyDBStore
 import time
 
@@ -17,6 +17,13 @@ class Tournament:
         """ Create first Round """
         first_round = Round('round1', False, False, self.pair_first_turn())
         self.rounds.append(first_round)
+
+    def new_round(self, tournament):
+        """ Create round by ranking and point"""
+        index_players_tournament_by_ranking = [print(x) for x in tournament.rounds[0]]
+        print(players_tournament)
+        Players().players = players_tournament
+
 
     def add_index_player_to_tournament(self, index):
         """ add Index player to tournaments"""
@@ -35,6 +42,7 @@ class Tournament:
             if not turn['end_date']:
                 dmy = time.localtime(time.time())
                 turn['end_date'] = time.strftime("%d/%m/%y %H:%M", dmy)
+
 
     def update_round(self, result):
         """ Update Round match result """
@@ -83,18 +91,18 @@ class Tournament:
             list_players = sorted(list_players, key=lambda t: int(t['ranking']), reverse=True)
         for p in list_players:
             index_players_by_rank.append(Players().find_index_players_by_last_name(p['last_name']))
-        #return [
-        #            ([self.players[index_players_by_rank[0]], 0], [self.players[index_players_by_rank[4]], 0]),
-        #            ([self.players[index_players_by_rank[1]], 0], [self.players[index_players_by_rank[5]], 0]),
-        #            ([self.players[index_players_by_rank[2]], 0], [self.players[index_players_by_rank[6]], 0]),
-        #            ([self.players[index_players_by_rank[3]], 0], [self.players[index_players_by_rank[7]], 0])
-        #        ]
         return [
-                    ([index_players_by_rank[0], 0], [index_players_by_rank[4], 0]),
-                    ([index_players_by_rank[1], 0], [index_players_by_rank[5], 0]),
-                    ([index_players_by_rank[2], 0], [index_players_by_rank[6], 0]),
-                    ([index_players_by_rank[3], 0], [index_players_by_rank[7], 0])
+                    ([self.players[index_players_by_rank[0]], 0], [self.players[index_players_by_rank[4]], 0]),
+                    ([self.players[index_players_by_rank[1]], 0], [self.players[index_players_by_rank[5]], 0]),
+                    ([self.players[index_players_by_rank[2]], 0], [self.players[index_players_by_rank[6]], 0]),
+                    ([self.players[index_players_by_rank[3]], 0], [self.players[index_players_by_rank[7]], 0])
                 ]
+        #return [
+        #            ([index_players_by_rank[0], 0], [index_players_by_rank[4], 0]),
+        #            ([index_players_by_rank[1], 0], [index_players_by_rank[5], 0]),
+        #            ([index_players_by_rank[2], 0], [index_players_by_rank[6], 0]),
+        #            ([index_players_by_rank[3], 0], [index_players_by_rank[7], 0])
+        #        ]
 
 
 class Tournaments:
