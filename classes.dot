@@ -1,0 +1,6 @@
+digraph "classes" {
+charset="utf-8"
+rankdir=BT
+"0" [label="{Db|\l|close()\lload_data(table)\lsave_data(data, table)\l}", shape="record"];
+"1" [label="{Player|players_by_name\lplayers_by_ranking\l|add_player(last_name, first_name, date_birth, gender, ranking)\lfind_index_player_by_last_name(last_name)\lfind_player_by_last_name(last_name)\lload_players()\lsave_players()\lupdate_rank_player_by_last_name(last_name, rank)\l}", shape="record"];
+}

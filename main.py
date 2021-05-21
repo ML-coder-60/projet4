@@ -1,6 +1,6 @@
-from views.menu import *
 
-from controllers.controller import Controller
+
+from controler.controller import Controller
 
 
 control = Controller()
