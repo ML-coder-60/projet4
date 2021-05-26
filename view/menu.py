@@ -40,16 +40,12 @@ class Menu:
             "confirm_player": ["""=== Validate Player """],
             "player_already_selected": ["Player Already Selected in tournament"],
             "player_for_tournament": ["Enter the 8 players for the new tournament"],
-            "Start_first_turn": [
-                "=========================================================",
-                "[14] Start round 1",
-                "[2]  Tournament Management",
-                "[99] Menu"],
-            "New_round": [
-                "=========================================================",
+            "new_round": [
+                "=================================================================",
                 "[14] Start new round",
                 "[2]  Tournament Management",
                 "[99] Menu"],
+            "confirm_tournament": ["""=== Validate Tournament """]
             }
 
     def __init__(self):
@@ -77,9 +73,9 @@ class Menu:
         print(s)
 
     @staticmethod
-    def display_tournament(tournament, players):
+    def display_tournament(tournament, players, index_player_and_points):
         """ Display Tournament """
-        s = "========\tTournament Description\t========\n"
+        s = "====================\tTournament Description\t\t=====================\n"
         s += "Name : \t\t\t"+tournament.name+"\n"
         s += "Location : \t\t\t"+tournament.location+"\n"
         s += "Start date : \t\t\t"+tournament.start_date+"\n"
@@ -87,20 +83,31 @@ class Menu:
         s += "Nbr of rounds : \t\t"+str(tournament.nbr_of_turn)+"\n"
         s += "Type of game : \t\t\t"+tournament.time_control+"\n"
         s += "Description : \t\t\t"+tournament.description+"\n"
-        s += "=========================================================\n"
+        s += "=============================================================================\n"
         turns = tournament.rounds
         if len(turns) > 0:
             for turn in turns:
                 pairs = turn.pairs
-                s += "=================\t"+turn.name+"\t\t=================\n\n"
+                s += "=================\t\t"+turn.name+"\t\t\t=====================\n\n"
                 num_match = 1
                 for match in pairs:
                     amatch = list(match)
                     s += "Match "+str(num_match)+":   Player : " + players[amatch[0][0]].last_name
                     s += "\t\tElo(" + players[amatch[0][0]].ranking
-                    s += ")  point : " + str(amatch[0][1]) + "\n"
+                    s += ")  Pts : " + str(amatch[0][1])
+                    s += "   Total Pts : " + str(index_player_and_points[amatch[0][0]]) + "\n"
                     s += "           Player : " + players[amatch[1][0]].last_name
                     s += "\t\tElo(" + players[amatch[1][0]].ranking
-                    s += ")  point : " + str(amatch[1][1]) + "\n"
+                    s += ")  Pts : " + str(amatch[1][1])
+                    s += "   Total Pts : " + str(index_player_and_points[amatch[1][0]]) + "\n"
                     num_match += 1
+        print(s)
+
+    @staticmethod
+    def start_round(nbr_round):
+        """ Display start_round """
+        s = "=============================================================================\n"
+        s += "[14] Start round "+str(nbr_round)+"\n"
+        s += "[2]  Tournament Management\n"
+        s += "[99] Menu\n"
         print(s)

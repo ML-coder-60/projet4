@@ -32,6 +32,7 @@ class Db:
         return result
 
     def close(self):
+        """ close connexion """
         self._db.close()
 
 

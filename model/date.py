@@ -8,8 +8,8 @@ class Date:
 
     @classmethod
     def check_date(cls, message, param):
-        """         check input date if ok return date
-         else  ask again date
+        """
+            check input date if ok return date  else  ask again date
         """
         while True:
             try:
@@ -20,4 +20,5 @@ class Date:
 
     @staticmethod
     def time_now():
+        """ return date """
         return datetime.datetime.now().strftime("%d/%m/%y %H:%M")

@@ -2,10 +2,9 @@
 # coding: utf-8
 import re
 
-import datetime
-
 
 class Util:
+    """ Methode check """
 
     @classmethod
     def check_input_by_regex(cls, message, regex):

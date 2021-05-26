@@ -2,9 +2,9 @@
 # coding: utf-8
 
 from model.db import Db
-from model.player import Player
 from model.round import Round
 from model.date import Date
+from model.player import Player
 
 
 class Tournament:
@@ -17,49 +17,36 @@ class Tournament:
             setattr(self, attr_name, attr_value)
         self.rounds = []
 
-    @staticmethod
-    def __load_tournaments():
+    @classmethod
+    def __load_tournaments(cls):
         """ Load data from table tournaments"""
         data = Db().load_data('tournament')
-        tournaments = list()
+        tournaments = []
         for tournament in data:
             rounds = []
             for turn in tournament['rounds']:
                 rounds.append(Round(**turn))
             tournament['rounds'] = rounds
-            tournaments.append(Tournament(**tournament))
-        return tournaments
+            tournaments.append(tournament)
+        cls.__TOURNAMENTS = [Tournament(**tournament) for tournament in tournaments]
 
-    def save_tournaments(self):
+    @staticmethod
+    def save_tournaments(tournaments):
         """ Save data in table tournament"""
         data_save = list()
-        for tournament in self.__TOURNAMENTS:
-            data = tournament.__dict__
-            data_round = list()
-            for turn in data['rounds']:
-                data_round.append(turn.__dict__)
-            data['rounds'] = data_round
-            data_save.append(data)
+        for tournament in tournaments:
+            tournament_save = tournament.__dict__.copy()
+            rounds = tournament_save['rounds'].copy()
+            tournament_save['rounds'] = [turn.__dict__ for turn in rounds]
+            data_save.append(tournament_save)
         Db().save_data(data_save, 'tournament')
 
-    def create_first_round(self):
-        """ Create first Round """
-        all_players = Player().list_players()
-        list_players = list()
-        index_players_by_rank = list()
-        players_tournament = [all_players[i] for i in self.players]
-        for player in players_tournament:
-            list_players.append(player.__dict__)
-            list_players = sorted(list_players, key=lambda t: int(t['ranking']), reverse=True)
-        for player in list_players:
-            index_players_by_rank.append(Player().find_index_player_by_last_name(player['last_name']))
-        self.rounds.append(Round('round1', False, False, index_players_by_rank))
-
-    def save_tournament(self, tournament):
-        """ Save player"""
-        self.__load_tournaments()
-        self.__TOURNAMENTS.append(tournament)
-        self.save_tournaments()
+    @classmethod
+    def save_tournament(cls, tournament):
+        """ Save Tournament"""
+        cls.__load_tournaments()
+        cls.__TOURNAMENTS.append(tournament)
+        Tournament.save_tournaments(cls.__TOURNAMENTS)
 
     def start_round(self):
         """ start round update start_date of turn """
@@ -83,7 +70,8 @@ class Tournament:
                     return self.somme_result(turn.pairs)
                 if isinstance(result, str):
                     index_players = Player().find_index_player_by_last_name(result)
-                    turn.pairs = self.update_pair(turn.pairs, index_players)
+                    if isinstance(index_players, int):
+                        turn.pairs = self.update_pair(turn.pairs, index_players)
                     return self.somme_result(turn.pairs)
 
     @staticmethod
@@ -108,66 +96,50 @@ class Tournament:
                 somme += float(match[1])
         return somme
 
-    def update_round_tournament(self, data):
+    @classmethod
+    def update_round_tournament(cls, data):
         """ Update tournament with name """
-        for tournament in self.__TOURNAMENTS:
+        for tournament in cls.__TOURNAMENTS:
             if tournament.name == data.name:
-                tournament.rounds = [Round(**x) for x in data.rounds]
-        self.save_tournaments()
-        return self.__TOURNAMENTS
+                tournament.rounds = data.rounds
+        Tournament.save_tournaments(cls.__TOURNAMENTS)
+        return cls.__TOURNAMENTS
 
+    @staticmethod
+    def get_pairs(index_players):
+        return [
+                    ([index_players[0], 0], [index_players[1], 0]),
+                    ([index_players[2], 0], [index_players[3], 0]),
+                    ([index_players[4], 0], [index_players[5], 0]),
+                    ([index_players[6], 0], [index_players[7], 0])
+                ]
+
+    def first_round(self):
+        """ Create first Round """
+        all_players = Player().get_players_db()
+        list_players = list()
+        index_players_by_rank = list()
+        players_tournament = [all_players[i] for i in self.players]
+        for player in players_tournament:
+            list_players.append(player.__dict__)
+            list_players = sorted(list_players, key=lambda t: int(t['ranking']), reverse=True)
+        for player in list_players:
+            index_players_by_rank.append(Player().find_index_player_by_last_name(player['last_name']))
+        index_players_first_round = [index_players_by_rank[0], index_players_by_rank[4],
+                                     index_players_by_rank[1], index_players_by_rank[5],
+                                     index_players_by_rank[2], index_players_by_rank[6],
+                                     index_players_by_rank[3], index_players_by_rank[7]
+                                     ]
+        self.rounds.append(Round('round1', False, False, Tournament.get_pairs(index_players_first_round)))
 
     def new_round(self):
         """ Create round by ranking and point"""
-        index_player_by_point_by_rank = list()
-        for point, player in self.get_total_point_by_player(self.rounds):
-            if len(player) == 1:
-                index_player_by_point_by_rank.append(
-                    Player().find_index_player_by_last_name(Player().list_players()[int(player[0])].last_name))
-            else:
-                players__ = list()
-                for i in player:
-                    players__.append(Player().list_players()[int(i)])
-                players_by_ranking = self.get_players_by_ranking(players__)
-                for player__ in players_by_ranking:
-                    index_player_by_point_by_rank.append(Player().find_index_player_by_last_name(player__.last_name))
-        test = [
-                ([index_player_by_point_by_rank[0], 0], [index_player_by_point_by_rank[1], 0]),
-                ([index_player_by_point_by_rank[2], 0], [index_player_by_point_by_rank[3], 0]),
-                ([index_player_by_point_by_rank[4], 0], [index_player_by_point_by_rank[5], 0]),
-                ([index_player_by_point_by_rank[6], 0], [index_player_by_point_by_rank[7], 0])
-        ]
-        print(test)
-
-
-    def get_total_point_by_player(self, rounds):
-        """ return the players (index) with their total game points  """
-        index_players_point = dict()
-
-        for turn in rounds:
-            for match in turn.pairs:
-                for data_player in match:
-                    try:
-                        index_players_point[data_player[0]] += float(data_player[1])
-                    except KeyError:
-                        index_players_point[data_player[0]] = float(data_player[1])
-        return self.sort_player_by_scrore(index_players_point)
-
-    def sort_player_by_scrore(self, point_by_player):
-        point_index_players = dict()
-        for key in point_by_player.keys():
-            try:
-                point_index_players[str(point_by_player[key])].append(str(key))
-            except KeyError:
-                point_index_players[str(point_by_player[key])] = [str(key)]
-        return sorted(point_index_players.items(), key=lambda t: t[0], reverse=True)
-
-    def get_players_by_ranking(self, players):
-        """ Return index player by ranking"""
-        list_players = list()
-        for player in players:
-            list_players.append(player.__dict__)
-            list_players = sorted(list_players, key=lambda t: int(t['ranking']), reverse=True)
-
-        #return list_players
-        return [Player(**x) for x in list_players]
+        index_player_by_point = Round.index_players_total_points(self.rounds)
+        sort_index_players_by_points = Round.sort_index_players_by_points(index_player_by_point)
+        index_player_by_point_by_rank = Round.index_player_by_point_by_rank(sort_index_players_by_points)
+        self.rounds.append(Round(
+            'round'+str(len(self.rounds) + 1),
+            False,
+            False,
+            Tournament.get_pairs(index_player_by_point_by_rank))
+        )

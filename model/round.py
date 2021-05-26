@@ -1,20 +1,52 @@
 """Class Round"""
 # coding: utf-8
 
+from model.player import Player
+
 
 class Round:
     """ Class Round """
 
-    __ROUNDS = []
-
-    def __init__(self, name, start_date, end_date, index_players):
+    def __init__(self, name, start_date, end_date, pairs):
         """Initialisation"""
         self.name = name
         self.start_date = start_date
         self.end_date = end_date
-        self.pairs = [
-                    ([index_players[0], 0], [index_players[4], 0]),
-                    ([index_players[1], 0], [index_players[5], 0]),
-                    ([index_players[2], 0], [index_players[6], 0]),
-                    ([index_players[3], 0], [index_players[7], 0])
-                ]
+        self.pairs = pairs
+
+    @staticmethod
+    def index_player_by_point_by_rank(sort_index_players_by_points):
+        index_player_by_point_by_rank = list()
+        for point, index_player in sort_index_players_by_points:
+            if len(index_player) == 1:
+                index_player_by_point_by_rank.append(int(index_player[0]))
+            else:
+                players = [ Player.get_players_db()[int(index)] for index in index_player]
+                players_by_ranking = Player.get_players_by_ranking(players)
+                for player__ in players_by_ranking:
+                    index_player_by_point_by_rank.append(Player().find_index_player_by_last_name(player__.last_name))
+        return index_player_by_point_by_rank
+
+    @staticmethod
+    def index_players_total_points(rounds):
+        """ return the players (index) with their total game points  """
+        index_players_total_points = dict()
+        for turn in rounds:
+            for match in turn.pairs:
+                for data_player in match:
+                    try:
+                        index_players_total_points[data_player[0]] += float(data_player[1])
+                    except KeyError:
+                        index_players_total_points[data_player[0]] = float(data_player[1])
+        return index_players_total_points
+
+    @staticmethod
+    def sort_index_players_by_points(index_player_by_point):
+        point_index_players = dict()
+        for key in index_player_by_point.keys():
+            try:
+                point_index_players[str(index_player_by_point[key])].append(str(key))
+            except KeyError:
+                point_index_players[str(index_player_by_point[key])] = [str(key)]
+        return sorted(point_index_players.items(), key=lambda t: t[0], reverse=True)
+
