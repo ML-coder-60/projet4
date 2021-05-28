@@ -58,6 +58,8 @@ class Controller:
 #                                   'time_control': self.input_time_control_tournament(),
 #                                   'description': self.input_description_tournament(),
 #                                   'players': self.input_select_player_for_tournament()
+#                                    'rounds': [],
+#                                    'status': 'In progress'
 #                                   }
                 data_tournament = {'name': "test"+str(random.randint(0, 1000)),
                                    'location': "Paris",
@@ -66,8 +68,9 @@ class Controller:
                                    'nbr_of_turn': "4",
                                    'time_control': "Blitz",
                                    'description': "sdfgdsqffgdsfgsdsfgd",
-                                   'players': self.input_players_for_tournament()
-                                   }
+                                   'players': self.input_players_for_tournament(),
+                                   'rounds': [],
+                                   'status': 'In progress'}
                 new_tournament = Tournament(**data_tournament)
                 new_tournament.first_round()
                 index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
@@ -79,6 +82,16 @@ class Controller:
                 Tournament.save_tournament(new_tournament)
                 Menu().start_round(len(new_tournament.rounds))
                 choice = self.util.choice_int('Enter your choice: ', "2|14|99")
+#            elif choice == 9:
+#                tournaments = Tournament.get_tournaments()
+#                for player in Player.get_players_by_ranking():
+#                   Menu().display_player(player)
+#                choice = 2
+            elif choice == 13:
+                tournaments = Tournament.get_tournaments()
+                Menu().resume_tournament(tournaments)
+                choice = 2
+                continue
             elif choice == 14:
                 new_tournament.start_round()
                 Tournament.update_round_tournament(new_tournament)
@@ -106,6 +119,7 @@ class Controller:
                             self.input_winner_of_round(new_tournament)
                         continue
                     else:
+                        new_tournament.stop()
                         index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
                         Menu().display_tournament(new_tournament, self.__ALL_PLAYERS, index_players_total_point)
                         choice = 2

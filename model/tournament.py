@@ -15,10 +15,9 @@ class Tournament:
     def __init__(self, **tournament):
         for attr_name, attr_value in tournament.items():
             setattr(self, attr_name, attr_value)
-        self.rounds = []
 
     @classmethod
-    def __load_tournaments(cls):
+    def load_tournaments(cls):
         """ Load data from table tournaments"""
         data = Db().load_data('tournament')
         tournaments = []
@@ -28,7 +27,13 @@ class Tournament:
                 rounds.append(Round(**turn))
             tournament['rounds'] = rounds
             tournaments.append(tournament)
+            print(tournaments)
         cls.__TOURNAMENTS = [Tournament(**tournament) for tournament in tournaments]
+
+    @classmethod
+    def get_tournaments(cls):
+        Tournament.load_tournaments()
+        return cls.__TOURNAMENTS
 
     @staticmethod
     def save_tournaments(tournaments):
@@ -44,7 +49,7 @@ class Tournament:
     @classmethod
     def save_tournament(cls, tournament):
         """ Save Tournament"""
-        cls.__load_tournaments()
+        cls.load_tournaments()
         cls.__TOURNAMENTS.append(tournament)
         Tournament.save_tournaments(cls.__TOURNAMENTS)
 
@@ -113,6 +118,9 @@ class Tournament:
                     ([index_players[4], 0], [index_players[5], 0]),
                     ([index_players[6], 0], [index_players[7], 0])
                 ]
+
+    def stop(self):
+        self.status = 'Finished'
 
     def first_round(self):
         """ Create first Round """

@@ -18,8 +18,10 @@ class Player:
         cls.__PLAYERS = [Player(**player_attributes) for player_attributes in Db().load_data('player')]
 
     @classmethod
-    def get_players_by_ranking(cls, players=[]):
+    def get_players_by_ranking(cls, players=None):
         """ return instances players by rank"""
+        if players is None:
+            players = []
         if players is None:
             players = list()
         list_players = list()
