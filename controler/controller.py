@@ -7,9 +7,6 @@ from model.tournament import Tournament
 from model.round import Round
 from controler.util import Util
 
-## debug
-import random
-
 
 class Controller:
     """ Class Controller"""
@@ -50,27 +47,17 @@ class Controller:
                 choice = self.input_update_rank_player(choice)
             elif choice == 8:
                 Menu().display_menu(choice)
-#                data_tournament = {'name': self.input_name_tournament(),
-#                                   'location': self.input_location_tournament(),
-#                                   'start_date': self.input_start_date_tournament(),
-#                                   'end_date': self.input_end_date_tournament(),
-#                                   'nbr_of_turn': self.input_nrb_of_turn_tournament(),
-#                                   'time_control': self.input_time_control_tournament(),
-#                                   'description': self.input_description_tournament(),
-#                                   'players': self.input_select_player_for_tournament()
-#                                    'rounds': [],
-#                                    'status': 'In progress'
-#                                   }
-                data_tournament = {'name': "test"+str(random.randint(0, 1000)),
-                                   'location': "Paris",
-                                   'start_date': "02/03/2020",
-                                   'end_date': "03/04/2020",
-                                   'nbr_of_turn': "4",
-                                   'time_control': "Blitz",
-                                   'description': "sdfgdsqffgdsfgsdsfgd",
+                data_tournament = {'name': self.input_name_tournament(),
+                                   'location': self.input_location_tournament(),
+                                   'start_date': self.input_start_date_tournament(),
+                                   'end_date': self.input_end_date_tournament(),
+                                   'nbr_of_turn': self.input_nrb_of_turn_tournament(),
+                                   'time_control': self.input_time_control_tournament(),
+                                   'description': self.input_description_tournament(),
                                    'players': self.input_players_for_tournament(),
-                                   'rounds': [],
-                                   'status': 'In progress'}
+                                    'rounds': [],
+                                    'status': 'In progress'
+                                   }
                 new_tournament = Tournament(**data_tournament)
                 new_tournament.first_round()
                 index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
@@ -82,11 +69,21 @@ class Controller:
                 Tournament.save_tournament(new_tournament)
                 Menu().start_round(len(new_tournament.rounds))
                 choice = self.util.choice_int('Enter your choice: ', "2|14|99")
-#            elif choice == 9:
-#                tournaments = Tournament.get_tournaments()
-#                for player in Player.get_players_by_ranking():
-#                   Menu().display_player(player)
-#                choice = 2
+            elif choice == 9:
+                tournaments = Tournament.get_tournaments()
+                tournament_name = Util().check_input_by_regex("Indicate the Name of the Tournament : ", "[A-Za-z0-9.]+")
+                tournament = Tournament().find_tournament_by_name(tournament_name)
+                if tournament:
+                    index_players_total_point = Round.index_players_total_points(tournament.rounds)
+                    Menu().display_tournament(tournament, self.__ALL_PLAYERS, index_players_total_point)
+                    if tournament.status == "In progress":
+                        choice = 14
+                        new_tournament = tournament
+                        continue
+                    choice = 2
+                else:
+                    Menu().resume_tournament(tournaments)
+                    choice = 9
             elif choice == 13:
                 tournaments = Tournament.get_tournaments()
                 Menu().resume_tournament(tournaments)
@@ -120,6 +117,7 @@ class Controller:
                         continue
                     else:
                         new_tournament.stop()
+                        Tournament.update_round_tournament(new_tournament)
                         index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
                         Menu().display_tournament(new_tournament, self.__ALL_PLAYERS, index_players_total_point)
                         choice = 2
@@ -175,11 +173,16 @@ class Controller:
         return self.util.check_input_by_regex("Indicate the Description of the tournament: ", "[A-Za-z0-9_. ]+")
 
     def input_winner_of_round(self, new_tournament):
+        points = Tournament.somme_result(new_tournament.rounds[-1].pairs)
+        print(points)
+        if points >= 4:
+            return None
         while True:
             result = self.util.check_input_by_regex(
                 "Indicate the Name of the winners or the number of null matches (ex 4) :  ",
                 "[A-Za-z1-4]+"
             )
+            print(new_tournament.__dict__)
             points = int(new_tournament.update_round(result))
             index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
             Menu().display_tournament(new_tournament, self.__ALL_PLAYERS, index_players_total_point)
@@ -218,12 +221,6 @@ class Controller:
         """
         Player.load_players()
         nbr = 0
-
-        ### debug
-        while nbr < 8:
-            nbr += 1
-        return [0,1,2,3,4,5,6,7]
-
         index_player = list()
         while nbr < 8:
             name_player = Util().check_input_by_regex(

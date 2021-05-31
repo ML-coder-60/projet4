@@ -27,7 +27,6 @@ class Tournament:
                 rounds.append(Round(**turn))
             tournament['rounds'] = rounds
             tournaments.append(tournament)
-            print(tournaments)
         cls.__TOURNAMENTS = [Tournament(**tournament) for tournament in tournaments]
 
     @classmethod
@@ -68,6 +67,7 @@ class Tournament:
     def update_round(self, result):
         """ Update Round match result """
         for turn in self.rounds:
+            print(turn.__dict__)
             if turn.start_date and not turn.end_date:
                 if result == "1" or result == "2" or result == "3" or result == "4":
                     turn.pairs[int(result)-1][0][1] = 0.5
@@ -142,12 +142,34 @@ class Tournament:
 
     def new_round(self):
         """ Create round by ranking and point"""
+        index_player = list()
         index_player_by_point = Round.index_players_total_points(self.rounds)
         sort_index_players_by_points = Round.sort_index_players_by_points(index_player_by_point)
         index_player_by_point_by_rank = Round.index_player_by_point_by_rank(sort_index_players_by_points)
+        nbr = 1
+        while len(index_player_by_point_by_rank) > 0:
+            if Round.check_pair(self.rounds, [index_player_by_point_by_rank[0],
+                                              index_player_by_point_by_rank[nbr]]):
+                index_player.append(index_player_by_point_by_rank.pop(0))
+                index_player.append(index_player_by_point_by_rank.pop(nbr-1))
+                nbr = 1
+                continue
+            else:
+                nbr += 1
         self.rounds.append(Round(
             'round'+str(len(self.rounds) + 1),
             False,
             False,
-            Tournament.get_pairs(index_player_by_point_by_rank))
+            Tournament.get_pairs(index_player))
         )
+
+    @classmethod
+    def find_tournament_by_name(cls, name):
+        """
+             find tournament by name
+             if find return tournament  else return False
+        """
+        for tournament in cls.__TOURNAMENTS:
+            if tournament.name == name:
+                return tournament
+        return False

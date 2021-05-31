@@ -50,3 +50,20 @@ class Round:
                 point_index_players[str(index_player_by_point[key])] = [str(key)]
         return sorted(point_index_players.items(), key=lambda t: t[0], reverse=True)
 
+    @staticmethod
+    def get_all_pairs(rounds):
+        pair = []
+        for turn in rounds:
+            for match in turn.pairs:
+                pair.append([match[0][0], match[1][0]])
+        return pair
+
+    @staticmethod
+    def check_pair(rounds, pair):
+        all_pair = Round.get_all_pairs(rounds)
+        print(all_pair)
+        print(pair)
+        if pair not in all_pair:
+            return True
+        return False
+

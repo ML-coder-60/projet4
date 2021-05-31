@@ -117,6 +117,5 @@ class Menu:
         s = "=========================\tTournament List\t=============================\n"
         s += "\t\tName Tournament\t\tDate Tournament\t\tStatus\n"
         for tournament in tournaments:
-            print(tournament.__dict__)
             s += "\t\t " + str(tournament.name)+"\t\t"+str(tournament.end_date)+"\t\t"+str(tournament.status)+"\n"
         print(s)
