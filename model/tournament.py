@@ -31,12 +31,13 @@ class Tournament:
 
     @classmethod
     def get_tournaments(cls):
+        """ Returns all tournament registered in the database """
         Tournament.load_tournaments()
         return cls.__TOURNAMENTS
 
     @staticmethod
     def save_tournaments(tournaments):
-        """ Save data in table tournament"""
+        """ Save tournaments in database """
         data_save = list()
         for tournament in tournaments:
             tournament_save = tournament.__dict__.copy()
@@ -47,7 +48,7 @@ class Tournament:
 
     @classmethod
     def save_tournament(cls, tournament):
-        """ Save Tournament"""
+        """ Save Tournament in database"""
         cls.load_tournaments()
         cls.__TOURNAMENTS.append(tournament)
         Tournament.save_tournaments(cls.__TOURNAMENTS)
@@ -111,6 +112,7 @@ class Tournament:
 
     @staticmethod
     def get_pairs(index_players):
+        """ create the pairs of the tournament rounds """
         return [
                     ([index_players[0], 0], [index_players[1], 0]),
                     ([index_players[2], 0], [index_players[3], 0]),
@@ -119,6 +121,7 @@ class Tournament:
                 ]
 
     def stop(self):
+        """ Set status tournament => Finished"""
         self.status = 'Finished'
 
     def first_round(self):

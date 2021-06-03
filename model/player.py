@@ -15,6 +15,7 @@ class Player:
 
     @classmethod
     def load_players(cls):
+        """ Load players from the database """
         cls.__PLAYERS = [Player(**player_attributes) for player_attributes in Db().load_data('player')]
 
     @classmethod
@@ -93,7 +94,7 @@ class Player:
 
     @staticmethod
     def save_players(players):
-        """ Save data in table player"""
+        """ Save Players in database """
         data_save = list()
         for player in players:
             data_player = player.__dict__

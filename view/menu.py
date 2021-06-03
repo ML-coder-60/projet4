@@ -54,6 +54,7 @@ class Menu:
 
     @staticmethod
     def clean():
+        """ Clean console """
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def display_menu(self, name_menu):
@@ -114,6 +115,7 @@ class Menu:
 
     @staticmethod
     def resume_tournament(tournaments):
+        """ Print resume tournament """
         s = "=========================\tTournament List\t=============================\n"
         s += "\t\tName Tournament\t\tDate Tournament\t\tStatus\n"
         for tournament in tournaments:

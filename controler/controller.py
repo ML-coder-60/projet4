@@ -59,7 +59,7 @@ class Controller:
                                    'end_date': self.check_input_date(
                                        "Indicate the End date of the tournament 'dd/mm/yyyy': "),
                                    'nbr_of_turn': self.check_input_by_regex(
-                                       "Indicate the number of rounds (default is 4) of the tournament: ","^[0-4]"),
+                                       "Indicate the number of rounds (default is 4) of the tournament: ", "^[0-4]"),
                                    'time_control': self.check_input_by_regex(
                                        'Indicate the type of game of the tournament Bullet, Blitz or Rapid: ',
                                        "^[Bullet|Blitz|Rapid]+"),
@@ -79,7 +79,8 @@ class Controller:
                 choice = self.util.choice_int('Enter your choice: ', "2|14|99")
             elif choice == 9:
                 tournaments = Tournament.get_tournaments()
-                tournament_name = Util().check_input_by_regex("Indicate the Name of the Tournament : ", "[A-Za-z0-9.]+")
+                tournament_name = Util().check_input_by_regex("Indicate the Name of the Tournament : ",
+                                                              "[A-Za-z0-9.]+")
                 tournament = Tournament().find_tournament_by_name(tournament_name)
                 if tournament:
                     index_players_total_point = Round.index_players_total_points(tournament.rounds)
@@ -153,7 +154,6 @@ class Controller:
 
     def input_winner_of_round(self, new_tournament):
         points = Tournament.somme_result(new_tournament.rounds[-1].pairs)
-        print(points)
         if points >= 4:
             return None
         while True:
@@ -161,7 +161,6 @@ class Controller:
                 "Indicate the Name of the winners or the number of null matches (ex 4) :  ",
                 "[A-Za-z1-4]+"
             )
-            print(new_tournament.__dict__)
             points = int(new_tournament.update_round(result))
             index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
             Menu().display_tournament(new_tournament, self.__ALL_PLAYERS, index_players_total_point)
@@ -212,7 +211,8 @@ class Controller:
                 if index in index_player:
                     Menu().display_menu('player_already_selected')
                     continue
-                if 'Y' == self.util.check_input_by_regex('Validate the new player for this game ? (Y)/(N): ', "^[Y/N]"):
+                if 'Y' == self.util.check_input_by_regex('Validate the new player for this game ? (Y)/(N): ',
+                                                         "^[Y/N]"):
                     nbr += 1
                     index_player.append(index)
             else:

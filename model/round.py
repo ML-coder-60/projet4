@@ -16,6 +16,7 @@ class Round:
 
     @staticmethod
     def index_player_by_point_by_rank(sort_index_players_by_points):
+        """  return the indexes of the players according to their points and rank"""
         index_player_by_point_by_rank = list()
         for point, index_player in sort_index_players_by_points:
             if len(index_player) == 1:
@@ -29,7 +30,7 @@ class Round:
 
     @staticmethod
     def index_players_total_points(rounds):
-        """ return the players (index) with their total game points  """
+        """ return the indexes of the players (index) with their total game points  """
         index_players_total_points = dict()
         for turn in rounds:
             for match in turn.pairs:
@@ -42,6 +43,7 @@ class Round:
 
     @staticmethod
     def sort_index_players_by_points(index_player_by_point):
+        """ return the indexes of the players according to their points  """
         point_index_players = dict()
         for key in index_player_by_point.keys():
             try:
@@ -52,6 +54,7 @@ class Round:
 
     @staticmethod
     def get_all_pairs(rounds):
+        """ Get all pairs (match) in the tournament """
         pair = []
         for turn in rounds:
             for match in turn.pairs:
@@ -60,6 +63,7 @@ class Round:
 
     @staticmethod
     def check_pair(rounds, pair):
+        """ check if a peer is already present in the tournament  """
         all_pair = Round.get_all_pairs(rounds)
         print(all_pair)
         print(pair)
