@@ -36,3 +36,7 @@ class Util:
                 continue
             else:
                 return result
+
+
+if __name__ == "__main__":
+    pass

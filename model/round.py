@@ -21,7 +21,7 @@ class Round:
             if len(index_player) == 1:
                 index_player_by_point_by_rank.append(int(index_player[0]))
             else:
-                players = [ Player.get_players_db()[int(index)] for index in index_player]
+                players = [Player.get_players_db()[int(index)] for index in index_player]
                 players_by_ranking = Player.get_players_by_ranking(players)
                 for player__ in players_by_ranking:
                     index_player_by_point_by_rank.append(Player().find_index_player_by_last_name(player__.last_name))
@@ -67,3 +67,6 @@ class Round:
             return True
         return False
 
+
+if __name__ == "__main__":
+    pass

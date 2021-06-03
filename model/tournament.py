@@ -67,7 +67,6 @@ class Tournament:
     def update_round(self, result):
         """ Update Round match result """
         for turn in self.rounds:
-            print(turn.__dict__)
             if turn.start_date and not turn.end_date:
                 if result == "1" or result == "2" or result == "3" or result == "4":
                     turn.pairs[int(result)-1][0][1] = 0.5
@@ -173,3 +172,7 @@ class Tournament:
             if tournament.name == name:
                 return tournament
         return False
+
+
+if __name__ == "__main__":
+    pass

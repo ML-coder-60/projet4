@@ -33,11 +33,14 @@ class Controller:
                 choice = Util().choice_int('Enter your choice: ', "8|9|13|99")
             elif choice == 6:
                 Menu().display_menu(choice)
-                data_player = {'last_name': self.input_last_name(),
-                               'first_name': self.input_first_name(),
-                               'date_birth': self.input_date_birth(),
-                               'gender': self.input_gender(),
-                               'ranking': self.input_ranking()
+                data_player = {'last_name': self.check_input_by_regex(
+                                    "Indicate the Last Name of the player: ", "[A-Za-z]+"),
+                               'first_name': self.check_input_by_regex(
+                                   "Indicate the First Name of the player: ", "[A-Za-z]+"),
+                               'date_birth': self.check_input_date(
+                                   "Indicate the Date birth of the player in format dd/mm/yyyy : "),
+                               'gender': self.check_input_by_regex('Indicate Gender of the player M/F: ', "^[M|F]"),
+                               'ranking': self.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
                                }
                 Player.save_player(Player(**data_player))
                 Menu().display_menu('menu_create_player')
@@ -47,16 +50,21 @@ class Controller:
                 choice = self.input_update_rank_player(choice)
             elif choice == 8:
                 Menu().display_menu(choice)
-                data_tournament = {'name': self.input_name_tournament(),
-                                   'location': self.input_location_tournament(),
-                                   'start_date': self.input_start_date_tournament(),
-                                   'end_date': self.input_end_date_tournament(),
-                                   'nbr_of_turn': self.input_nrb_of_turn_tournament(),
-                                   'time_control': self.input_time_control_tournament(),
-                                   'description': self.input_description_tournament(),
-                                   'players': self.input_players_for_tournament(),
-                                    'rounds': [],
-                                    'status': 'In progress'
+                data_tournament = {'name': self.check_input_by_regex(
+                                        "Indicate the Name of the tournament: ", "[A-Za-z0-9_. ]+"),
+                                   'location': self.check_input_by_regex(
+                                       "Indicate the Location of the tournament: ", "[A-Za-z0-9_. ]+"),
+                                   'start_date': self.check_input_date(
+                                       "Indicate the Start date of the tournament 'dd/mm/yyyy': "),
+                                   'end_date': self.check_input_date(
+                                       "Indicate the End date of the tournament 'dd/mm/yyyy': "),
+                                   'nbr_of_turn': self.check_input_by_regex(
+                                       "Indicate the number of rounds (default is 4) of the tournament: ","^[0-4]"),
+                                   'time_control': self.check_input_by_regex(
+                                       'Indicate the type of game of the tournament Bullet, Blitz or Rapid: ',
+                                       "^[Bullet|Blitz|Rapid]+"),
+                                   'description': self.check_input_by_regex(
+                                       "Indicate the Description of the tournament: ", "[A-Za-z0-9_. ]+"),
                                    }
                 new_tournament = Tournament(**data_tournament)
                 new_tournament.first_round()
@@ -135,42 +143,13 @@ class Controller:
             else:
                 self.start()
 
-    def input_last_name(self):
-        return self.util.check_input_by_regex("Indicate the Last Name of the player: ", "[A-Za-z]+")
+    def check_input_by_regex(self, message, regex):
+        # check input with regex
+        return self.util.check_input_by_regex(message, regex)
 
-    def input_first_name(self):
-        return self.util.check_input_by_regex("Indicate the First Name of the player: ", "[A-Za-z]+")
-
-    def input_date_birth(self):
-        return self.date.check_date("Indicate the Date birth of the player in format dd/mm/yyyy : ", '/')
-
-    def input_gender(self):
-        return self.util.check_input_by_regex('Indicate Gender of the player M/F: ', "^[M|F]")
-
-    def input_ranking(self):
-        return self.util.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
-
-    def input_name_tournament(self):
-        return self.util.check_input_by_regex("Indicate the Name of the tournament: ", "[A-Za-z0-9_. ]+")
-
-    def input_location_tournament(self):
-        return self.util.check_input_by_regex("Indicate the Location of the tournament: ", "[A-Za-z0-9_. ]+")
-
-    def input_start_date_tournament(self):
-        return self.date.check_date("Indicate the Start date of the tournament 'dd/mm/yyyy': ", '/')
-
-    def input_end_date_tournament(self):
-        return self.date.check_date("Indicate the End date of the tournament 'dd/mm/yyyy': ", '/')
-
-    def input_nrb_of_turn_tournament(self):
-        return self.util.choice_int('Indicate the number of rounds (default is 4) of the tournament: ', "^[0-4]")
-
-    def input_time_control_tournament(self):
-        return self.util.check_input_by_regex('Indicate the type of game of the tournament Bullet, Blitz or Rapid: ',
-                                              "^[Bullet|Blitz|Rapid]+")
-
-    def input_description_tournament(self):
-        return self.util.check_input_by_regex("Indicate the Description of the tournament: ", "[A-Za-z0-9_. ]+")
+    def check_input_date(self, message):
+        # check input date with separator "/"
+        return self.date.check_date(message, '/')
 
     def input_winner_of_round(self, new_tournament):
         points = Tournament.somme_result(new_tournament.rounds[-1].pairs)
@@ -241,3 +220,7 @@ class Controller:
                 for player in self.player.get_players_by_name():
                     Menu().display_player(player)
         return index_player
+
+
+if __name__ == "__main__":
+    pass

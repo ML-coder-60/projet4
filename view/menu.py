@@ -119,3 +119,7 @@ class Menu:
         for tournament in tournaments:
             s += "\t\t " + str(tournament.name)+"\t\t"+str(tournament.end_date)+"\t\t"+str(tournament.status)+"\n"
         print(s)
+
+
+if __name__ == "__main__":
+    pass

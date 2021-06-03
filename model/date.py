@@ -22,3 +22,7 @@ class Date:
     def time_now():
         """ return date """
         return datetime.datetime.now().strftime("%d/%m/%y %H:%M")
+
+
+if __name__ == "__main__":
+    pass
