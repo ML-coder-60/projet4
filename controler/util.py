@@ -1,11 +1,10 @@
 """Class Util"""
 # coding: utf-8
 import re
-import os
-import datetime
 
 
 class Util:
+    """ Methode check """
 
     @classmethod
     def check_input_by_regex(cls, message, regex):
@@ -26,29 +25,18 @@ class Util:
                 return input_str
 
     @classmethod
-    def check_date(cls, message, param):
-        """
-         check input date if ok return date
-         else  ask again date
-        """
-        while True:
-            try:
-                day, month, year = input(message).split(param)
-                return str(datetime.datetime(int(year), int(month), int(day)).strftime("%d/%m/%Y"))
-            except ValueError:
-                continue
-
-    @classmethod
-    def choice_int(cls, message):
+    def choice_int(cls, message, regex):
         """ Check response is valid"""
         while True:
             try:
                 result = int(input(message))
-                cls.clean()
-                return result
             except ValueError:
                 continue
+            if not re.fullmatch(regex, str(result)):
+                continue
+            else:
+                return result
 
-    @staticmethod
-    def clean():
-        os.system('cls' if os.name == 'nt' else 'clear')
+
+if __name__ == "__main__":
+    pass

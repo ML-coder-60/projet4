@@ -1,0 +1,10 @@
+digraph "packages" {
+charset="utf-8"
+rankdir=BT
+"0" [label="model", shape="box"];
+"1" [label="model.db", shape="box"];
+"2" [label="model.player", shape="box"];
+"0" -> "1" [arrowhead="open", arrowtail="none"];
+"0" -> "2" [arrowhead="open", arrowtail="none"];
+"2" -> "1" [arrowhead="open", arrowtail="none"];
+}
