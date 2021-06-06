@@ -16,7 +16,12 @@ class Round:
 
     @staticmethod
     def index_player_by_point_by_rank(sort_index_players_by_points):
-        """  return the indexes of the players according to their points and rank"""
+        """  return the indexes of the players according to their points and rank
+
+        Returns:
+        - List of index_player according to their points and rank
+          [ index_player_y, index_player_z, ....]
+        """
         index_player_by_point_by_rank = list()
         for point, index_player in sort_index_players_by_points:
             if len(index_player) == 1:
@@ -30,7 +35,12 @@ class Round:
 
     @staticmethod
     def index_players_total_points(rounds):
-        """ return the indexes of the players (index) with their total game points  """
+        """ return dictionary index_players with total game points
+
+         Returns:
+        - dictionary index_player: total_points_game
+          { index_player_x: total_points_game, index_player_y: total_points_game ....}
+        """
         index_players_total_points = dict()
         for turn in rounds:
             for match in turn.pairs:
@@ -43,7 +53,13 @@ class Round:
 
     @staticmethod
     def sort_index_players_by_points(index_player_by_point):
-        """ return the indexes of the players according to their points  """
+        """ returns a list of tuple containing the points of the players
+             and the indexes of the players having these points sorted by points
+
+        Returns:
+        - pairs list of tuples
+          [( pointx , [index player, index player, ....]), ( pointy , [index player, index player, ....])]
+        """
         point_index_players = dict()
         for key in index_player_by_point.keys():
             try:
@@ -54,7 +70,11 @@ class Round:
 
     @staticmethod
     def get_all_pairs(rounds):
-        """ Get all pairs (match) in the tournament """
+        """ Get all pairs (match) in the tournament
+
+        Returns:
+        - pairs list of pair
+        """
         pair = []
         for turn in rounds:
             for match in turn.pairs:
@@ -63,10 +83,18 @@ class Round:
 
     @staticmethod
     def check_pair(rounds, pair):
-        """ check if a peer is already present in the tournament  """
+        """ check if a pair is already present in the tournament
+            if present return true
+            else false
+
+        Attrs:
+        - rounds (list): rounds of tournament
+        - pair (tuple of list):  match
+
+        Returns:
+        - Boolean
+        """
         all_pair = Round.get_all_pairs(rounds)
-        print(all_pair)
-        print(pair)
         if pair not in all_pair:
             return True
         return False

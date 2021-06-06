@@ -6,7 +6,7 @@ import os
 
 class Db:
     """
-    initialise, load , save
+    initialise, load , save data
     """
     __DB_FILE = 'db.json'
     __DB_REP = 'data'
@@ -18,18 +18,30 @@ class Db:
         self._db = TinyDB(self._db_file)
 
     def save_data(self, data, table):
-        """
-            select table ,clean data end backup data in table
+        """ select table ,clean data end backup data in table
+
+        Attrs:
+        - data (list): dictionary list including information 
+        - table (str): name of the table where the information is saved  
+        
+        Returns:
+        - none 
         """
         data_table = self._db.table(table)
         data_table.truncate()
         data_table.insert_multiple(data)
 
     def load_data(self, table):
-        """return data table"""
+        """return information in the table
+
+        Attrs:
+        - table (str): name of the table where the information is loaded
+
+        Returns:
+        - dictionary list including information
+        """
         data_table = self._db.table(table)
-        result = data_table.all()
-        return result
+        return data_table.all()
 
     def close(self):
         """ close connexion """

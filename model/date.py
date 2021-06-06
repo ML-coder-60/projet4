@@ -8,8 +8,14 @@ class Date:
 
     @classmethod
     def check_date(cls, message, param):
-        """
-            check input date if ok return date  else  ask again date
+        """ check input param if date return date  else ask again date
+
+        Attrs:
+        - message (str) : Question that will be asked of the user
+        - param (str) : Delimiter to separate days months years
+
+        Returns:
+        - returns the date in the format  dd/mm/yyyy
         """
         while True:
             try:
@@ -20,7 +26,11 @@ class Date:
 
     @staticmethod
     def time_now():
-        """ return date """
+        """ returns the current date
+
+        Returns:
+          - returns the current date in the format  dd/mm/yyyy hh:mm
+        """
         return datetime.datetime.now().strftime("%d/%m/%y %H:%M")
 
 

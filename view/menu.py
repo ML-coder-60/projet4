@@ -49,16 +49,28 @@ class Menu:
             }
 
     def __init__(self):
+        """ Initialisation menu attributes """
         for name_menu, text_menu in self.MENU.items():
             setattr(self, name_menu, text_menu)
 
     @staticmethod
     def clean():
-        """ Clean console """
+        """ Clean console
+
+        Returns:
+        - none
+        """
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def display_menu(self, name_menu):
-        """ Display menu """
+        """ Display menu
+
+        Attrs:
+        - name_menu (str):  name of menu
+
+        Returns:
+        - print menu
+        """
         if name_menu == 99:
             self.clean()
         s = ""
@@ -68,14 +80,33 @@ class Menu:
 
     @staticmethod
     def display_player(player):
-        """ Display Player  """
-        s = "Last Name  : "+player.last_name+"\t\tFirst Name : "+player.first_name+" ("+player.gender+")\n"
-        s += "Date Birth : "+player.date_birth+"\t\tRanking  Elo : "+player.ranking+"\n"
+        """ Display Player
+
+        Attrs:
+        - player (instance):  instance player
+
+        Returns:
+        - print/display info player
+        """
+        s = "-".center(120, '-')+"\n"
+        s += "Last Name : " + player.last_name.center(16)+"First Name : "
+        s += player.first_name.center(16) + " (" + player.gender + ") "
+        s += "Date Birth : "+player.date_birth.center(16) + "Elo : "+player.ranking.center(6) + "\n"
         print(s)
 
     @staticmethod
     def display_tournament(tournament, players, index_player_and_points):
-        """ Display Tournament """
+        """ Display Tournament
+
+        Attrs:
+        - tournament (instance):  instance tournament
+        - players (instance) : list instances players
+        - index_player_and_points  (dictionary):
+              { index_player_x: total_points_game, index_player_y: total_points_game ....}
+
+        Returns:
+        - print/display info player
+        """
         s = "====================\tTournament Description\t\t=====================\n"
         s += "Name : \t\t\t"+tournament.name+"\n"
         s += "Location : \t\t\t"+tournament.location+"\n"
@@ -106,8 +137,15 @@ class Menu:
 
     @staticmethod
     def start_round(nbr_round):
-        """ Display start_round """
-        s = "=============================================================================\n"
+        """ Display start_round
+
+        Attrs:
+        - nbr_round (int):  number of round
+
+        Returns:
+        - print/display menu start round
+        """
+        s = "=".center(80, '=')+"\n"
         s += "[14] Start round "+str(nbr_round)+"\n"
         s += "[2]  Tournament Management\n"
         s += "[99] Menu\n"
@@ -115,11 +153,22 @@ class Menu:
 
     @staticmethod
     def resume_tournament(tournaments):
-        """ Print resume tournament """
-        s = "=========================\tTournament List\t=============================\n"
-        s += "\t\tName Tournament\t\tDate Tournament\t\tStatus\n"
+        """ Print resume tournament
+
+        Attrs:
+        - tournaments (instance):  instance tournament
+
+        Returns:
+        - print/display resume tournament 
+        """
+        s = " Tournament List ".center(50, '=')+"\n"
+        s += " Name ".center(8)
+        s += " Date ".center(16)
+        s += " Status ".center(24)+"\n"
         for tournament in tournaments:
-            s += "\t\t " + str(tournament.name)+"\t\t"+str(tournament.end_date)+"\t\t"+str(tournament.status)+"\n"
+            s += str(tournament.name).center(8)
+            s += str(tournament.end_date).center(16)
+            s += str(tournament.status).center(24)+"\n"
         print(s)
 
 

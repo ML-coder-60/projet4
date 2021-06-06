@@ -37,8 +37,8 @@ class Controller:
                                     "Indicate the Last Name of the player: ", "[A-Za-z]+"),
                                'first_name': self.check_input_by_regex(
                                    "Indicate the First Name of the player: ", "[A-Za-z]+"),
-                               'date_birth': self.check_input_date(
-                                   "Indicate the Date birth of the player in format dd/mm/yyyy : "),
+                               'date_birth': self.date.check_date(
+                                   'Indicate the Date birth of the player in format dd/mm/yyyy : ', '/'),
                                'gender': self.check_input_by_regex('Indicate Gender of the player M/F: ', "^[M|F]"),
                                'ranking': self.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
                                }
@@ -54,10 +54,10 @@ class Controller:
                                         "Indicate the Name of the tournament: ", "[A-Za-z0-9_. ]+"),
                                    'location': self.check_input_by_regex(
                                        "Indicate the Location of the tournament: ", "[A-Za-z0-9_. ]+"),
-                                   'start_date': self.check_input_date(
-                                       "Indicate the Start date of the tournament 'dd/mm/yyyy': "),
-                                   'end_date': self.check_input_date(
-                                       "Indicate the End date of the tournament 'dd/mm/yyyy': "),
+                                   'start_date': self.date.check_date(
+                                       "Indicate the Start date of the tournament 'dd/mm/yyyy': ", '/'),
+                                   'end_date': self.date.check_date(
+                                       "Indicate the End date of the tournament 'dd/mm/yyyy': ", '/'),
                                    'nbr_of_turn': self.check_input_by_regex(
                                        "Indicate the number of rounds (default is 4) of the tournament: ", "^[0-4]"),
                                    'time_control': self.check_input_by_regex(
@@ -65,8 +65,12 @@ class Controller:
                                        "^[Bullet|Blitz|Rapid]+"),
                                    'description': self.check_input_by_regex(
                                        "Indicate the Description of the tournament: ", "[A-Za-z0-9_. ]+"),
+                                   'players': self.input_players_for_tournament(),
+                                   'rounds': [],
+                                   'status': 'In progress'
                                    }
                 new_tournament = Tournament(**data_tournament)
+
                 new_tournament.first_round()
                 index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
                 Menu().display_tournament(new_tournament, self.__ALL_PLAYERS, index_players_total_point)
@@ -148,10 +152,6 @@ class Controller:
         # check input with regex
         return self.util.check_input_by_regex(message, regex)
 
-    def check_input_date(self, message):
-        # check input date with separator "/"
-        return self.date.check_date(message, '/')
-
     def input_winner_of_round(self, new_tournament):
         points = Tournament.somme_result(new_tournament.rounds[-1].pairs)
         if points >= 4:
@@ -204,9 +204,9 @@ class Controller:
             name_player = Util().check_input_by_regex(
                     "Indicate the Last Name of player {} of the tournament: ".format(nbr+1),
                     "[A-Za-z]+")
-            index = self.player.find_index_player_by_last_name(name_player)
+            index = Player().find_index_player_by_last_name(name_player)
             if index:
-                Menu().display_player(self.player.find_player_by_last_name(name_player))
+                Menu().display_player(Player().find_player_by_last_name(name_player))
                 Menu().display_menu('confirm_player')
                 if index in index_player:
                     Menu().display_menu('player_already_selected')
@@ -217,7 +217,7 @@ class Controller:
                     index_player.append(index)
             else:
                 Menu().display_menu('no_found_player')
-                for player in self.player.get_players_by_name():
+                for player in Player().get_players_by_name():
                     Menu().display_player(player)
         return index_player
 
