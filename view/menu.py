@@ -4,36 +4,41 @@ import os
 
 
 class Menu:
+
+    MAX_LENGTH = 80
+    NAME_LENGTH = 20
+    DATE_LENGTH = 12
+    GENDER_LENGTH = 8
+    ELO_LENGTH = 6
+    STATUS_LENGTH = 14
     MENU = {"99": [
-                "===      Dashboard       ===",
+                " Dashboard ".center(MAX_LENGTH, "="),
                 "[1]  Player Management",
                 "[2]  Tournament Management",
                 "[3]  Restore Last State",
                 "[4]  Save State",
                 "[0]  Exit"],
             "1": [
-                "===  Player Management   ===",
+                " Player Management ".center(MAX_LENGTH, "="),
                 "[6]  Create Player",
                 "[7]  Edit Player",
                 "[11] Player by Last Name",
                 "[12] Player ranking ",
                 "[99] Menu"],
             "2": [
-                "=== Tournament Management ===",
+                " Tournament Management ".center(MAX_LENGTH, "="),
                 "[8]  Create Tournament",
-                "[9]  Load Tournament",
-                "[13] View Tournament",
+                "[9]  Load/View Tournament",
                 "[99] Menu"],
-            "6": [
-                "=== Create Player ==="],
+            "6": [" Create Player ".center(MAX_LENGTH, "=")],
             "menu_create_player": [
-                "=== Create Player ===",
+                " Create Player ".center(MAX_LENGTH, "="),
                 "[6] Create new Player",
                 "[1] Player Management"],
-            "7": ["=== Edit Player ==="""],
-            "new_rank": ["""=== Edit Rank ==="""],
+            "7": [" Edit Player ".center(MAX_LENGTH, "=")],
+            "new_rank": [" Edit Rank ".center(MAX_LENGTH, "=")],
             "no_found_player": [
-                "=== Player Not Found ===",
+                " Player Not Found ".center(MAX_LENGTH, "="),
                 " ",
                 "List of Players Available"],
             "8": ["===  New Tournament ==="],
@@ -41,7 +46,7 @@ class Menu:
             "player_already_selected": ["Player Already Selected in tournament"],
             "player_for_tournament": ["Enter the 8 players for the new tournament"],
             "new_round": [
-                "=================================================================",
+                "=".center(MAX_LENGTH, "="),
                 "[14] Start new round",
                 "[2]  Tournament Management",
                 "[99] Menu"],
@@ -78,24 +83,40 @@ class Menu:
             s = s + text + "\n"
         print(s)
 
-    @staticmethod
-    def display_player(player):
-        """ Display Player
-
+    @classmethod
+    def display_player(cls, player):
+        """ Display Player(s)
+            if player is instance display player
+            if player list of instances display players
         Attrs:
-        - player (instance):  instance player
+        - player (list instance):  list instance player
 
         Returns:
         - print/display info player
         """
-        s = "-".center(120, '-')+"\n"
-        s += "Last Name : " + player.last_name.center(16)+"First Name : "
-        s += player.first_name.center(16) + " (" + player.gender + ") "
-        s += "Date Birth : "+player.date_birth.center(16) + "Elo : "+player.ranking.center(6) + "\n"
-        print(s)
+        menu = "-".center(cls.MAX_LENGTH, '-') + "\n"
+        menu += "Last Name".ljust(cls.NAME_LENGTH) + "First Name".ljust(cls.NAME_LENGTH)
+        menu += "Gender".ljust(cls.GENDER_LENGTH) + "Date Birth".ljust(cls.DATE_LENGTH)
+        menu += "Elo".ljust(cls.ELO_LENGTH) + "\n"
+        if isinstance(player, list):
+            s = menu
+            for instance_player in player:
+                s += instance_player.last_name.ljust(cls.NAME_LENGTH)
+                s += instance_player.first_name.ljust(cls.NAME_LENGTH)
+                s += instance_player.gender.ljust(cls.GENDER_LENGTH)
+                s += instance_player.date_birth.ljust(cls.DATE_LENGTH)
+                s += instance_player.ranking.ljust(cls.ELO_LENGTH) + "\n"
+            print(s)
+        else:
+            s = menu
+            s += player.last_name.ljust(cls.NAME_LENGTH)
+            s += player.first_name.ljust(cls.NAME_LENGTH)
+            s += player.gender.ljust(cls.GENDER_LENGTH)
+            s += player.date_birth.ljust(cls.DATE_LENGTH)
+            s += player.ranking.ljust(cls.ELO_LENGTH) + "\n"
+            print(s)
 
-    @staticmethod
-    def display_tournament(tournament, players, index_player_and_points):
+    def display_tournament(self, tournament, players, index_player_and_points):
         """ Display Tournament
 
         Attrs:
@@ -107,36 +128,41 @@ class Menu:
         Returns:
         - print/display info player
         """
-        s = "====================\tTournament Description\t\t=====================\n"
-        s += "Name : \t\t\t"+tournament.name+"\n"
-        s += "Location : \t\t\t"+tournament.location+"\n"
-        s += "Start date : \t\t\t"+tournament.start_date+"\n"
-        s += "End date : \t\t\t"+tournament.end_date+"\n"
-        s += "Nbr of rounds : \t\t"+str(tournament.nbr_of_turn)+"\n"
-        s += "Type of game : \t\t\t"+tournament.time_control+"\n"
-        s += "Description : \t\t\t"+tournament.description+"\n"
-        s += "=============================================================================\n"
+        self.clean()
+        s = " Tournament Description ".center(self.MAX_LENGTH, '=')+"\n"
+        s += "Name : ".ljust(self.NAME_LENGTH)+tournament.name.ljust(self.NAME_LENGTH)
+        s += "Location : ".ljust(self.NAME_LENGTH)+tournament.location.ljust(self.NAME_LENGTH)+"\n"
+        s += "Start date : ".ljust(self.NAME_LENGTH)+tournament.start_date.ljust(self.NAME_LENGTH)
+        s += "End date : ".ljust(self.NAME_LENGTH)+tournament.end_date.ljust(self.NAME_LENGTH)+"\n"
+        s += "Nbr of rounds : ".ljust(self.NAME_LENGTH)+str(tournament.nbr_of_turn).ljust(self.NAME_LENGTH)
+        s += "Type of game : ".ljust(self.NAME_LENGTH)+tournament.time_control.ljust(self.NAME_LENGTH)+"\n"
+        s += "Description : ".ljust(self.NAME_LENGTH)+tournament.description.ljust(self.NAME_LENGTH)+"\n\n"
+        s += "=".center(self.MAX_LENGTH, '=')+"\n"
         turns = tournament.rounds
         if len(turns) > 0:
             for turn in turns:
                 pairs = turn.pairs
-                s += "=================\t\t"+turn.name+"\t\t\t=====================\n\n"
+                s += turn.name.center(self.MAX_LENGTH, '=')+"\n"
                 num_match = 1
                 for match in pairs:
-                    amatch = list(match)
-                    s += "Match "+str(num_match)+":   Player : " + players[amatch[0][0]].last_name
-                    s += "\t\tElo(" + players[amatch[0][0]].ranking
-                    s += ")  Pts : " + str(amatch[0][1])
-                    s += "   Total Pts : " + str(index_player_and_points[amatch[0][0]]) + "\n"
-                    s += "           Player : " + players[amatch[1][0]].last_name
-                    s += "\t\tElo(" + players[amatch[1][0]].ranking
-                    s += ")  Pts : " + str(amatch[1][1])
-                    s += "   Total Pts : " + str(index_player_and_points[amatch[1][0]]) + "\n"
+                    #amatch = list(match)
+                    str_match = "Match "+str(num_match)
+                    s += str_match.ljust(self.MAX_LENGTH, '-')+"\n"
+                    s += "Player".ljust(self.NAME_LENGTH) + "Elo".ljust(self.ELO_LENGTH)
+                    s += "Pts".ljust(self.ELO_LENGTH) + "Total Pts".ljust(self.STATUS_LENGTH) + "\n"
+                    s += players[match[0][0]].last_name.ljust(self.NAME_LENGTH)
+                    s += players[match[0][0]].ranking.ljust(self.ELO_LENGTH)
+                    s += str(match[0][1]).ljust(self.ELO_LENGTH)
+                    s += str(index_player_and_points[match[0][0]]).ljust(self.STATUS_LENGTH) + "\n"
+                    s += players[match[1][0]].last_name.ljust(self.NAME_LENGTH)
+                    s += players[match[1][0]].ranking.ljust(self.ELO_LENGTH)
+                    s += str(match[1][1]).ljust(self.ELO_LENGTH)
+                    s += str(index_player_and_points[match[1][0]]).ljust(self.STATUS_LENGTH) + "\n"
                     num_match += 1
         print(s)
 
-    @staticmethod
-    def start_round(nbr_round):
+    @classmethod
+    def start_round(cls, nbr_round):
         """ Display start_round
 
         Attrs:
@@ -145,30 +171,30 @@ class Menu:
         Returns:
         - print/display menu start round
         """
-        s = "=".center(80, '=')+"\n"
+        s = "=".center(cls.MAX_LENGTH, '=')+"\n"
         s += "[14] Start round "+str(nbr_round)+"\n"
         s += "[2]  Tournament Management\n"
         s += "[99] Menu\n"
         print(s)
 
-    @staticmethod
-    def resume_tournament(tournaments):
+    @classmethod
+    def resume_tournament(cls, tournaments):
         """ Print resume tournament
 
         Attrs:
-        - tournaments (instance):  instance tournament
+        - tournaments (list instance):  instances tournaments
 
         Returns:
         - print/display resume tournament 
         """
-        s = " Tournament List ".center(50, '=')+"\n"
-        s += " Name ".center(8)
-        s += " Date ".center(16)
-        s += " Status ".center(24)+"\n"
+        s = " Tournament List ".center(cls.MAX_LENGTH, '=')+"\n"
+        s += "  Name".ljust(cls.NAME_LENGTH)
+        s += "  Date".ljust(cls.DATE_LENGTH)
+        s += "  Status".ljust(cls.STATUS_LENGTH)+"\n"
         for tournament in tournaments:
-            s += str(tournament.name).center(8)
-            s += str(tournament.end_date).center(16)
-            s += str(tournament.status).center(24)+"\n"
+            s += str(tournament.name).ljust(cls.NAME_LENGTH)
+            s += str(tournament.end_date).ljust(cls.DATE_LENGTH)
+            s += str(tournament.status).ljust(cls.STATUS_LENGTH)+"\n"
         print(s)
 
 

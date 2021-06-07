@@ -70,7 +70,6 @@ class Controller:
                                    'status': 'In progress'
                                    }
                 new_tournament = Tournament(**data_tournament)
-
                 new_tournament.first_round()
                 index_players_total_point = Round.index_players_total_points(new_tournament.rounds)
                 Menu().display_tournament(new_tournament, self.__ALL_PLAYERS, index_players_total_point)
@@ -137,13 +136,11 @@ class Controller:
                         break
             elif choice == 11:
                 Player.load_players()
-                for player in Player.get_players_by_name():
-                    self.menu.display_player(player)
+                self.menu.display_player(Player.get_players_by_name())
                 choice = 1
             elif choice == 12:
                 Player.load_players()
-                for player in Player.get_players_by_ranking():
-                    Menu().display_player(player)
+                Menu().display_player(Player.get_players_by_ranking())
                 choice = 1
             else:
                 self.start()
@@ -187,8 +184,7 @@ class Controller:
         else:
             Menu().display_menu('no_found_player')
             Player.load_players()
-            for player in Player.get_players_by_name():
-                self.menu.display_player(player)
+            self.menu.display_player(Player.get_players_by_name())
             return 7
 
     def input_players_for_tournament(self):
@@ -217,8 +213,7 @@ class Controller:
                     index_player.append(index)
             else:
                 Menu().display_menu('no_found_player')
-                for player in Player().get_players_by_name():
-                    Menu().display_player(player)
+                Menu().display_player(Player().get_players_by_name())
         return index_player
 
 
