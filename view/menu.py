@@ -11,37 +11,36 @@ class Menu:
     GENDER_LENGTH = 8
     ELO_LENGTH = 6
     STATUS_LENGTH = 14
-    MENU = {"99": [
+    MENU = {"menu_principal": [
                 " Dashboard ".center(MAX_LENGTH, "="),
                 "[1]  Player Management",
                 "[2]  Tournament Management",
-                "[3]  Restore Last State",
-                "[4]  Save State",
                 "[0]  Exit"],
-            "1": [
+            "player_management": [
                 " Player Management ".center(MAX_LENGTH, "="),
                 "[6]  Create Player",
                 "[7]  Edit Player",
                 "[11] Player by Last Name",
                 "[12] Player ranking ",
                 "[99] Menu"],
-            "2": [
+            "tournament_management": [
                 " Tournament Management ".center(MAX_LENGTH, "="),
                 "[8]  Create Tournament",
-                "[9]  Load/View Tournament",
+                "[9]  Load Tournament",
+                "[13] View All Tournaments ",
                 "[99] Menu"],
-            "6": [" Create Player ".center(MAX_LENGTH, "=")],
+            "create_player": [" Create Player ".center(MAX_LENGTH, "=")],
             "menu_create_player": [
                 " Create Player ".center(MAX_LENGTH, "="),
                 "[6] Create new Player",
                 "[1] Player Management"],
-            "7": [" Edit Player ".center(MAX_LENGTH, "=")],
+            "edit_player": [" Edit Player ".center(MAX_LENGTH, "=")],
             "new_rank": [" Edit Rank ".center(MAX_LENGTH, "=")],
             "no_found_player": [
                 " Player Not Found ".center(MAX_LENGTH, "="),
                 " ",
                 "List of Players Available"],
-            "8": ["===  New Tournament ==="],
+            "new_tournament": ["===  New Tournament ==="],
             "confirm_player": ["""=== Validate Player """],
             "player_already_selected": ["Player Already Selected in tournament"],
             "player_for_tournament": ["Enter the 8 players for the new tournament"],
@@ -76,8 +75,6 @@ class Menu:
         Returns:
         - print menu
         """
-        if name_menu == 99:
-            self.clean()
         s = ""
         for text in getattr(self, str(name_menu)):
             s = s + text + "\n"
