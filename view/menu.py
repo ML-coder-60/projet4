@@ -184,7 +184,7 @@ class Menu:
         - tournaments (list instance):  instances tournaments
 
         Returns:
-        - print/display resume tournament 
+            - print/display resume tournament
         """
         s = " Tournament List ".center(cls.MAX_LENGTH, '=')+"\n"
         s += "  Name".ljust(cls.NAME_LENGTH)

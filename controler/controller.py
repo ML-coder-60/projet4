@@ -184,7 +184,8 @@ class Controller:
                 "Indicate the number of rounds (default is 4) of the tournament: ", "^[0-4]"),
             'time_control': self.check_input_by_regex(
                 'Indicate the type of game of the tournament Bullet, Blitz or Rapid: ', "^[Bullet|Blitz|Rapid]+"),
-            'description': self.check_input_by_regex("Indicate the Description of the tournament: ", "[A-Za-z0-9_. ]+"),
+            'description': self.check_input_by_regex("Indicate the Description of the tournament: ",
+                                                     "[A-Za-z0-9_. ]+"),
             'players': self.input_players_for_tournament(),
             'rounds': [],
             'status': 'In progress'
