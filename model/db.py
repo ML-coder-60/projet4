@@ -21,11 +21,10 @@ class Db:
         """ select table ,clean data end backup data in table
 
         Attrs:
-        - data (list): dictionary list including information 
-        - table (str): name of the table where the information is saved  
-        
+            - data (list): dictionary list including information
+            - table (str): name of the table where the information is saved
         Returns:
-        - none 
+            - none
         """
         data_table = self._db.table(table)
         data_table.truncate()

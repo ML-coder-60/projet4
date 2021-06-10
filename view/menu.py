@@ -21,13 +21,15 @@ class Menu:
                 "[6]  Create Player",
                 "[7]  Edit Player",
                 "[11] Player by Last Name",
-                "[12] Player ranking ",
+                "[12] Player by ranking Elo ",
                 "[99] Menu"],
             "tournament_management": [
                 " Tournament Management ".center(MAX_LENGTH, "="),
                 "[8]  Create Tournament",
                 "[9]  Load Tournament",
                 "[13] View All Tournaments ",
+                "[15] Player sort by ranking Elo for tournament",
+                "[16] Player sor by Last Name for tournament",
                 "[99] Menu"],
             "create_player": [" Create Player ".center(MAX_LENGTH, "=")],
             "menu_create_player": [
@@ -81,17 +83,21 @@ class Menu:
         print(s)
 
     @classmethod
-    def display_player(cls, player):
-        """ Display Player(s)
+    def display_player(cls, player, title=False):
+        """ Display title if not False
+            Display Player(s)
             if player is instance display player
             if player list of instances display players
         Attrs:
         - player (list instance):  list instance player
+        - title (str) : title
 
         Returns:
         - print/display info player
         """
         menu = "-".center(cls.MAX_LENGTH, '-') + "\n"
+        if title:
+            menu += str(title).center(cls.MAX_LENGTH, '-') + "\n\n"
         menu += "Last Name".ljust(cls.NAME_LENGTH) + "First Name".ljust(cls.NAME_LENGTH)
         menu += "Gender".ljust(cls.GENDER_LENGTH) + "Date Birth".ljust(cls.DATE_LENGTH)
         menu += "Elo".ljust(cls.ELO_LENGTH) + "\n"

@@ -18,7 +18,7 @@ class Player:
         """ load players and turn them into an instances list players
 
         Returns:
-        - none
+          - none
         """
         cls.__PLAYERS = [Player(**player_attributes) for player_attributes in Db().load_data('player')]
 
@@ -28,10 +28,10 @@ class Player:
             if players is None load players from database
 
         Attrs:
-        - Player (list):  list  instance of players
+          - Player (list):  list  instance of players
 
         Returns:
-        - list instance of players sorted by rank
+          - list instance of players sorted by rank
         """
         list_players = list()
         if players is None:
@@ -42,14 +42,20 @@ class Player:
         return [Player(**player) for player in list_players]
 
     @classmethod
-    def get_players_by_name(cls):
+    def get_players_by_name(cls, players=None):
         """ Returns a list  instance of Players by Name
+            if players is None load players from database
+
+        Attrs:
+          - Player (list):  list  instance of players
 
         Returns:
-        - list instance of players sorted by name
+          - list instance of players sorted by name
         """
         list_players = list()
-        for player in cls.__PLAYERS:
+        if players is None:
+            players = cls.__PLAYERS
+        for player in players:
             list_players.append(player.__dict__)
             list_players = sorted(list_players, key=lambda t: str(t['last_name']))
         return [Player(**player) for player in list_players]
@@ -59,8 +65,7 @@ class Player:
         """ Returns list index of instance players
 
         Returns:
-        - list index of instance players sorted by name
-
+          - list index of instance players sorted by name
         """
         index_players = list()
         for player in cls.__PLAYERS:
@@ -74,10 +79,9 @@ class Player:
             else return False
 
         Attrs:
-        - last_name (str):  Name of aplayer
-
+          - last_name (str):  Name of aplayer
         Returns:
-        - instance of player or False
+          - instance of player or False
         """
         for player in cls.__PLAYERS:
             if player.last_name == last_name:
@@ -95,10 +99,10 @@ class Player:
             else return False
 
         Attrs:
-        - last_name (str):  Name of player
+          - last_name (str):  Name of player
 
         Returns:
-        - index (int)  instance player or False
+          - index (int)  instance player or False
         """
         self.load_players()
         for index, value in enumerate(self.__PLAYERS):
@@ -111,7 +115,7 @@ class Player:
         """ Save player to database
 
         Returns:
-        - None
+          - None
         """
         cls.load_players()
         cls.__PLAYERS.append(player)
@@ -121,7 +125,7 @@ class Player:
         """ Add instance player to __PLAYERS
 
         Returns:
-        - None
+          - None
         """
         self.__PLAYERS.append(player)
 
@@ -130,7 +134,7 @@ class Player:
         """ Save Players in database
 
         Returns:
-        - None
+          - None
         """
         data_save = list()
         for player in players:
@@ -146,7 +150,7 @@ class Player:
             and save players
 
         Returns:
-        - None
+          - None
         """
         for player in cls.__PLAYERS:
             if player.last_name == last_name:

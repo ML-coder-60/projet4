@@ -27,28 +27,87 @@ class Controller:
             elif choice == 8:
                 choice = self.new_tournament()
             elif choice == 9:
-                choice = self.load_tournament()
-            elif choice == 13:
-                tournaments = Tournament.get_tournaments()
-                Menu().resume_tournament(tournaments)
-                choice = 2
-            elif choice == 14:
-                choice = self.play_tournament()
+                choice = self.run_tournament()
             elif choice == 11:
                 choice = Controller.display_player_by_last_name()
             elif choice == 12:
                 choice = Controller.display_player_by_ranking()
+            elif choice == 13:
+                choice = Controller.display_resume_tournaments()
+            elif choice == 14:
+                choice = self.play_tournament()
+            elif choice == 15:
+                choice = Controller.display_player_by_ranking_for_tournament()
+            elif choice == 16:
+                choice = Controller.display_player_by_last_name_for_tournament()
             else:
                 self.start()
+
+    @staticmethod
+    def display_player_by_ranking_for_tournament():
+        """
+            search tournament by name
+            Display player by ranking for tournament
+            return 1 ( choice display menu player)
+
+        Returns:
+            2 (int) menu player management
+        """
+        tournament = Controller.load_tournament_by_name()
+        if tournament:
+            players = Player.get_players_db()
+            players_tournament = [players[i] for i in tournament.players]
+            title = "Players by ranking for tournament : " + tournament.name
+            Menu().display_player(Player().get_players_by_ranking(players_tournament), title)
+            return 2
+        else:
+            tournaments = Tournament.get_tournaments()
+            Menu().resume_tournament(tournaments)
+            return 15
+
+    @staticmethod
+    def display_player_by_last_name_for_tournament():
+        """
+            search tournament by name
+            Display player by last name for tournament
+            return 1 ( choice display menu player)
+
+        Returns:
+            2 (int) menu player management
+        """
+        tournament = Controller.load_tournament_by_name()
+        if tournament:
+            players = Player.get_players_db()
+            players_tournament = [players[i] for i in tournament.players]
+            title = "Players by ranking for tournament : " + tournament.name
+            Menu().display_player(Player().get_players_by_name(players_tournament), title)
+            return 2
+        else:
+            tournaments = Tournament.get_tournaments()
+            Menu().resume_tournament(tournaments)
+            return 16
+
+    @staticmethod
+    def display_resume_tournaments():
+        """
+            Display resume all tournaments
+            return 2 ( display menu tournaments management)
+
+        Returns:
+          - 2 (int)  menu player management
+        """
+        tournaments = Tournament.get_tournaments()
+        Menu().resume_tournament(tournaments)
+        return 2
 
     @staticmethod
     def display_player_by_last_name():
         """
             Display player by last name
-            return 1 ( choice display menu player)
+            return 1 ( display menu player)
 
         Returns:
-            1 (int)
+           - 1 (int) menu player management
         """
         Player.load_players()
         Menu().display_player(Player.get_players_by_name())
@@ -58,10 +117,10 @@ class Controller:
     def display_player_by_ranking():
         """
             Display player by ranking
-            return 1 ( choice display menu player)
+            return 1 ( choice display menu player management)
 
         Returns:
-            1 (int)
+            1 (int)menu player management
         """
         Player.load_players()
         Menu().display_player(Player.get_players_by_ranking())
@@ -129,7 +188,7 @@ class Controller:
         """
 
         Menu().display_menu('tournament_management')
-        return Controller.choice_int('Enter your choice: ', "8|9|13|99")
+        return Controller.choice_int('Enter your choice: ', "8|9|13|15|16|99")
 
     @staticmethod
     def create_player():
@@ -201,9 +260,25 @@ class Controller:
         Menu().start_round(len(self.__TOURNAMENT.rounds))
         return Controller.choice_int('Enter your choice: ', "2|14|99")
 
-    def load_tournament(self):
+    @staticmethod
+    def load_tournament_by_name():
         """
-            Load tournament witch input name
+            Search Tournament by name
+            if tournament find
+                return instance tournament
+            else
+                return False
+
+        Returns:
+            instance Tournament or False
+
+        """
+        tournament_name = Controller.check_input_by_regex("Indicate the Name of the Tournament : ", "[A-Za-z0-9.]+")
+        return Tournament().find_tournament_by_name(tournament_name)
+
+    def run_tournament(self):
+        """
+            Search tournament by name
             if input tournament exist
                 display tournament
                 if tournament Finished  => return 2 (display menu tournament_management)
@@ -214,9 +289,7 @@ class Controller:
         Returns:
             - int
         """
-        tournaments = Tournament.get_tournaments()
-        tournament_name = Controller.check_input_by_regex("Indicate the Name of the Tournament : ", "[A-Za-z0-9.]+")
-        tournament = Tournament().find_tournament_by_name(tournament_name)
+        tournament = Controller.load_tournament_by_name()
         if tournament:
             self.display_tournament(tournament)
             if tournament.status == "In progress":
@@ -224,6 +297,7 @@ class Controller:
                 return 14
             return 2
         else:
+            tournaments = Tournament.get_tournaments()
             Menu().resume_tournament(tournaments)
             return 9
 
