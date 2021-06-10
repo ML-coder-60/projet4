@@ -140,11 +140,13 @@ class Menu:
             for turn in turns:
                 pairs = turn.pairs
                 s += turn.name.center(self.MAX_LENGTH, '=')+"\n"
+                s += "Start date : ".ljust(self.NAME_LENGTH)+turn.start_date+"\n"
+                if turn.end_date:
+                    s += "End date : ".ljust(self.NAME_LENGTH)+turn.end_date+"\n"
                 num_match = 1
                 for match in pairs:
-                    #amatch = list(match)
                     str_match = "Match "+str(num_match)
-                    s += str_match.ljust(self.MAX_LENGTH, '-')+"\n"
+                    s += str_match.center(self.MAX_LENGTH, '-')+"\n"
                     s += "Player".ljust(self.NAME_LENGTH) + "Elo".ljust(self.ELO_LENGTH)
                     s += "Pts".ljust(self.ELO_LENGTH) + "Total Pts".ljust(self.STATUS_LENGTH) + "\n"
                     s += players[match[0][0]].last_name.ljust(self.NAME_LENGTH)
@@ -169,7 +171,7 @@ class Menu:
         - print/display menu start round
         """
         s = "=".center(cls.MAX_LENGTH, '=')+"\n"
-        s += "[14] Start round "+str(nbr_round)+"\n"
+        s += "[14] Enter the results of the matches of the Round "+str(nbr_round)+"\n"
         s += "[2]  Tournament Management\n"
         s += "[99] Menu\n"
         print(s)

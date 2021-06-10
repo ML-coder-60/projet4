@@ -60,8 +60,10 @@ class Tournament:
         Db().save_data(data_save, 'tournament')
 
     @classmethod
-    def save_tournament(cls, tournament):
+    def save_tournament(cls, ins_tournament):
         """ Save Tournament in database
+            if present update
+               absent  add
 
         Attrs:
         - tournament (instance)
@@ -70,18 +72,12 @@ class Tournament:
         - none
         """
         cls.load_tournaments()
-        cls.__TOURNAMENTS.append(tournament)
+        for tournament in cls.__TOURNAMENTS:
+            if tournament.name == ins_tournament.name:
+                Tournament.save_tournaments(cls.__TOURNAMENTS)
+                return None
+        cls.__TOURNAMENTS.append(ins_tournament)
         Tournament.save_tournaments(cls.__TOURNAMENTS)
-
-    def start_round(self):
-        """ Set param start_date of turn
-
-        Returns:
-        - none
-        """
-        for turn in self.rounds:
-            if not turn.start_date:
-                turn.start_date = Date().time_now()
 
     def stop_round(self):
         """ Set param end_date of turn
@@ -215,8 +211,7 @@ class Tournament:
                                      index_players_by_rank[2], index_players_by_rank[6],
                                      index_players_by_rank[3], index_players_by_rank[7]
                                      ]
-        self.rounds.append(Round('round1', False, False, Tournament.get_pairs(index_players_first_round)))
-        ### ici bon format vérifié dans la sauvagarde et la récupération
+        self.rounds.append(Round('round1', Date().time_now(), False, Tournament.get_pairs(index_players_first_round)))
 
     def new_round(self):
         """ Create pairs of round by ranking and point
@@ -246,7 +241,7 @@ class Tournament:
         # Add new round to rounds
         self.rounds.append(Round(
             'round'+str(len(self.rounds) + 1),
-            False,
+            Date().time_now(),
             False,
             Tournament.get_pairs(index_player))
         )
