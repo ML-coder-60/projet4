@@ -1,8 +1,6 @@
-"""Class Menu"""
 # coding: utf-8
-
 from controler.controller import Controller
 
-
-control = Controller()
-control.start()
+if __name__ == "__main__":
+    control = Controller()
+    control.start()
