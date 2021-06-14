@@ -29,7 +29,7 @@ class Menu:
                 "[9]  Load Tournament",
                 "[13] View All Tournaments ",
                 "[15] Player sort by ranking Elo for tournament",
-                "[16] Player sor by Last Name for tournament",
+                "[16] Player sort by Last Name for tournament",
                 "[99] Menu"],
             "create_player": [" Create Player ".center(MAX_LENGTH, "=")],
             "menu_create_player": [

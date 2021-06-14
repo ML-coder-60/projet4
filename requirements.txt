@@ -1,0 +1,9 @@
+# Ce fichier requis.txt fait partie du projet ProJet 4 et de la
+# Les exigences énumérées doivent être installées lors de l'exécution de l'application.
+#
+# Pour générer un rapport flake8-html, installez les dépendances flake8 en utilisant
+# pip3 install  -R Configuration requirements-flake.txt à la place.
+#
+
+pkg-resources==0.0.0
+tinydb==4.4.0

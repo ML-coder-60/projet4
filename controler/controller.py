@@ -453,7 +453,8 @@ class Controller:
             name_player = Controller.check_input_by_regex(
                 "Indicate the Last Name of player {} of the tournament: ".format(nbr + 1), "[A-Za-z]+")
             index = Player().find_index_player_by_last_name(name_player)
-            if index:
+            print(index)
+            if not isinstance(index, bool):
                 Menu().display_player(Player().find_player_by_last_name(name_player))
                 Menu().display_menu('confirm_player')
                 if index in index_player:
