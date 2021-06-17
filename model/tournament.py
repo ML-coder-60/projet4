@@ -3,8 +3,8 @@
 
 from model.db import Db
 from model.round import Round
-from model.date import Date
 from model.player import Player
+import datetime
 
 
 class Tournament:
@@ -87,7 +87,7 @@ class Tournament:
         """
         for turn in self.rounds:
             if not turn.end_date:
-                turn.end_date = Date().time_now()
+                turn.end_date = self.time_now()
 
     def update_round(self, result):
         """ update the unfinished round ( turn.end_date == False )
@@ -211,7 +211,7 @@ class Tournament:
                                      index_players_by_rank[2], index_players_by_rank[6],
                                      index_players_by_rank[3], index_players_by_rank[7]
                                      ]
-        self.rounds.append(Round('round1', Date().time_now(), False, Tournament.get_pairs(index_players_first_round)))
+        self.rounds.append(Round('round1', self.time_now(), False, Tournament.get_pairs(index_players_first_round)))
 
     def new_round(self):
         """ Create pairs of round by ranking and point
@@ -241,7 +241,7 @@ class Tournament:
         # Add new round to rounds
         self.rounds.append(Round(
             'round'+str(len(self.rounds) + 1),
-            Date().time_now(),
+            self.time_now(),
             False,
             Tournament.get_pairs(index_player))
         )
@@ -263,6 +263,11 @@ class Tournament:
                 return tournament
         return False
 
+    @staticmethod
+    def time_now():
+        """ returns the current date
 
-if __name__ == "__main__":
-    pass
+        Returns:
+          - returns the current date in the format  dd/mm/yyyy hh:mm
+        """
+        return datetime.datetime.now().strftime("%d/%m/%y %H:%M")

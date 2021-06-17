@@ -1,6 +1,8 @@
 """Class Menu"""
 # coding: utf-8
 import os
+import re
+import datetime
 
 
 class Menu:
@@ -202,6 +204,60 @@ class Menu:
             s += str(tournament.status).ljust(cls.STATUS_LENGTH)+"\n"
         print(s)
 
+    @staticmethod
+    def check_input_by_regex(message, regex):
+        """
+            check input by type and by regex
+            if ok return input else ask again
 
-if __name__ == "__main__":
-    pass
+        Returns:
+           input (str)
+        """
+        while True:
+            try:
+                input_str = str(input(message)).capitalize()
+            except ValueError:
+                # input incorrect retry
+                continue
+            if not re.fullmatch(regex, input_str):
+                # Value input incorrect
+                continue
+            else:
+                return input_str
+
+    @staticmethod
+    def choice_int(message, regex):
+        """
+            Check input is valid by regex
+            if ok return input else ask again
+
+        Returns:
+            input (int)
+        """
+        while True:
+            try:
+                result = int(input(message))
+            except ValueError:
+                continue
+            if not re.fullmatch(regex, str(result)):
+                continue
+            else:
+                return result
+
+    @staticmethod
+    def check_date(message, param):
+        """ check input param if date return date  else ask again date
+
+        Attrs:
+         - message (str) : Question that will be asked of the user
+         - param (str) : Delimiter to separate days months years
+
+        Returns:
+         - returns the date in the format  dd/mm/yyyy
+        """
+        while True:
+            try:
+                day, month, year = input(message).split(param)
+                return str(datetime.datetime(int(year), int(month), int(day)).strftime("%d/%m/%Y"))
+            except ValueError:
+                continue

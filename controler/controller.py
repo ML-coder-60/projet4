@@ -2,10 +2,8 @@
 # coding: utf-8
 from view.menu import Menu
 from model.player import Player
-from model.date import Date
 from model.tournament import Tournament
 from model.round import Round
-import re
 
 
 class Controller:
@@ -127,27 +125,6 @@ class Controller:
         return 1
 
     @staticmethod
-    def check_input_by_regex(message, regex):
-        """
-            check input by type and by regex
-            if ok return input else ask again
-
-        Returns:
-            input (str)
-        """
-        while True:
-            try:
-                input_str = str(input(message)).capitalize()
-            except ValueError:
-                # input incorrect retry
-                continue
-            if not re.fullmatch(regex, input_str):
-                # Value input incorrect
-                continue
-            else:
-                return input_str
-
-    @staticmethod
     def menu_principal():
         """
             Clean console
@@ -159,7 +136,7 @@ class Controller:
         """
         Menu().clean()
         Menu().display_menu("menu_principal")
-        choice = Controller.choice_int('Enter your choice: ', "^[0-2]")
+        choice = Menu.choice_int('Enter your choice: ', "^[0-2]")
         if choice == 0:
             exit()
         else:
@@ -175,7 +152,7 @@ class Controller:
          - input (int)
         """
         Menu().display_menu('player_management')
-        return Controller.choice_int('Enter your choice: ', "6|7|11|12|99")
+        return Menu.choice_int('Enter your choice: ', "6|7|11|12|99")
 
     @staticmethod
     def tournament_management():
@@ -188,7 +165,7 @@ class Controller:
         """
 
         Menu().display_menu('tournament_management')
-        return Controller.choice_int('Enter your choice: ', "8|9|13|15|16|99")
+        return Menu.choice_int('Enter your choice: ', "8|9|13|15|16|99")
 
     @staticmethod
     def create_player():
@@ -205,15 +182,15 @@ class Controller:
         """
         Menu().display_menu('create_player')
         data_player = {
-            'last_name': Controller.check_input_by_regex("Indicate the Last Name of the player: ", "[A-Za-z]+"),
-            'first_name': Controller.check_input_by_regex("Indicate the First Name of the player: ", "[A-Za-z]+"),
-            'date_birth': Date().check_date('Indicate the Date birth of the player in format dd/mm/yyyy : ', '/'),
-            'gender': Controller.check_input_by_regex('Indicate Gender of the player M/F: ', "^[M|F]"),
-            'ranking': Controller.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
+            'last_name': Menu.check_input_by_regex("Indicate the Last Name of the player: ", "[A-Za-z]+"),
+            'first_name': Menu.check_input_by_regex("Indicate the First Name of the player: ", "[A-Za-z]+"),
+            'date_birth': Menu.check_date('Indicate the Date birth of the player in format dd/mm/yyyy : ', '/'),
+            'gender': Menu.check_input_by_regex('Indicate Gender of the player M/F: ', "^[M|F]"),
+            'ranking': Menu.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
         }
         Player.save_player(Player(**data_player))
         Menu().display_menu('menu_create_player')
-        return Controller.choice_int('Enter your choice: ', "6|1")
+        return Menu.choice_int('Enter your choice: ', "6|1")
 
     def new_tournament(self):
         """
@@ -235,15 +212,15 @@ class Controller:
         """
         Menu().display_menu('new_tournament')
         data_tournament = {
-            'name': self.check_input_by_regex("Indicate the Name of the tournament: ", "[A-Za-z0-9_. ]+"),
-            'location': self.check_input_by_regex("Indicate the Location of the tournament: ", "[A-Za-z0-9_. ]+"),
-            'start_date': Date().check_date("Indicate the Start date of the tournament 'dd/mm/yyyy': ", '/'),
-            'end_date': Date().check_date("Indicate the End date of the tournament 'dd/mm/yyyy': ", '/'),
-            'nbr_of_turn': self.check_input_by_regex(
+            'name': Menu.check_input_by_regex("Indicate the Name of the tournament: ", "[A-Za-z0-9_. ]+"),
+            'location': Menu.check_input_by_regex("Indicate the Location of the tournament: ", "[A-Za-z0-9_. ]+"),
+            'start_date': Menu.check_date("Indicate the Start date of the tournament 'dd/mm/yyyy': ", '/'),
+            'end_date': Menu.check_date("Indicate the End date of the tournament 'dd/mm/yyyy': ", '/'),
+            'nbr_of_turn': Menu.check_input_by_regex(
                 "Indicate the number of rounds (default is 4) of the tournament: ", "^[0-4]"),
-            'time_control': self.check_input_by_regex(
+            'time_control': Menu.check_input_by_regex(
                 'Indicate the type of game of the tournament Bullet, Blitz or Rapid: ', "^[Bullet|Blitz|Rapid]+"),
-            'description': self.check_input_by_regex("Indicate the Description of the tournament: ",
+            'description': Menu.check_input_by_regex("Indicate the Description of the tournament: ",
                                                      "[A-Za-z0-9_. ]+"),
             'players': self.input_players_for_tournament(),
             'rounds': [],
@@ -254,11 +231,11 @@ class Controller:
         self.__TOURNAMENT.first_round()
         self.display_tournament(self.__TOURNAMENT)
         Menu().display_menu('confirm_tournament')
-        if 'N' == Controller.check_input_by_regex('Validate this Tournament ? (Y)/(N): ', "^[Y/N]"):
+        if 'N' == Menu.check_input_by_regex('Validate this Tournament ? (Y)/(N): ', "^[Y/N]"):
             return 2
         self.__TOURNAMENT.save_tournament(self.__TOURNAMENT)
         Menu().start_round(len(self.__TOURNAMENT.rounds))
-        return Controller.choice_int('Enter your choice: ', "2|14|99")
+        return Menu.choice_int('Enter your choice: ', "2|14|99")
 
     @staticmethod
     def load_tournament_by_name():
@@ -273,7 +250,7 @@ class Controller:
             instance Tournament or False
 
         """
-        tournament_name = Controller.check_input_by_regex("Indicate the Name of the Tournament : ", "[A-Za-z0-9.]+")
+        tournament_name = Menu.check_input_by_regex("Indicate the Name of the Tournament : ", "[A-Za-z0-9.]+")
         return Tournament().find_tournament_by_name(tournament_name)
 
     def run_tournament(self):
@@ -326,7 +303,7 @@ class Controller:
           - bool
         """
         if not tournament.rounds[-1].end_date:
-            if 'Y' == Controller.check_input_by_regex('Validate this round ? (Y)/(N): ', "^[Y/N]"):
+            if 'Y' == Menu.check_input_by_regex('Validate this round ? (Y)/(N): ', "^[Y/N]"):
                 tournament.stop_round()
                 Tournament.update_round_tournament(tournament)
                 return True
@@ -367,7 +344,7 @@ class Controller:
                 self.__TOURNAMENT.new_round()
                 self.display_tournament(self.__TOURNAMENT)
                 Menu().start_round(len(self.__TOURNAMENT.rounds))
-                choice_ = Controller.choice_int('Enter your choice: ', "2|14|99")
+                choice_ = Menu.choice_int('Enter your choice: ', "2|14|99")
                 if choice_ != 14:
                     return choice_
                 continue
@@ -389,7 +366,7 @@ class Controller:
         """
         points = Tournament.somme_result(new_tournament.rounds[-1].pairs)
         while points < 4:
-            result = Controller.check_input_by_regex(
+            result = Menu.check_input_by_regex(
                 "Indicate the Name of the winners or the number of null matches (ex 4) :  ", "[A-Za-z1-4]+"
             )
             points = int(new_tournament.update_round(result))
@@ -417,12 +394,12 @@ class Controller:
         """
         Menu().display_menu('edit_player')
         Player.load_players()
-        last_name = Controller.check_input_by_regex("Indicate the First Name of the player: ", "[A-Za-z]+")
+        last_name = Menu.check_input_by_regex("Indicate the First Name of the player: ", "[A-Za-z]+")
         player = Player.find_player_by_last_name(last_name)
         if player:
             Menu().display_player(player)
             Menu().display_menu('new_rank')
-            new_rank = Controller.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
+            new_rank = Menu.check_input_by_regex("indicate the player's Ranking: ", "[0-9]{4}")
             Player.update_rank_player_by_last_name(last_name, new_rank)
             Menu().display_menu('edit_player')
             player = Player.find_player_by_last_name(last_name)
@@ -450,7 +427,7 @@ class Controller:
         nbr = 0
         index_player = list()
         while nbr < 8:
-            name_player = Controller.check_input_by_regex(
+            name_player = Menu.check_input_by_regex(
                 "Indicate the Last Name of player {} of the tournament: ".format(nbr + 1), "[A-Za-z]+")
             index = Player().find_index_player_by_last_name(name_player)
             print(index)
@@ -460,7 +437,7 @@ class Controller:
                 if index in index_player:
                     Menu().display_menu('player_already_selected')
                     continue
-                if 'Y' == Controller.check_input_by_regex(
+                if 'Y' == Menu.check_input_by_regex(
                         'Validate the new player for this game ? (Y)/(N): ',
                         "^[Y/N]"):
                     nbr += 1
@@ -469,26 +446,3 @@ class Controller:
                 Menu().display_menu('no_found_player')
                 Menu().display_player(Player().get_players_by_name())
         return index_player
-
-    @staticmethod
-    def choice_int(message, regex):
-        """
-            Check input is valid by regex
-            if ok return input else ask again
-
-        Returns:
-            input (int)
-        """
-        while True:
-            try:
-                result = int(input(message))
-            except ValueError:
-                continue
-            if not re.fullmatch(regex, str(result)):
-                continue
-            else:
-                return result
-
-
-if __name__ == "__main__":
-    pass
