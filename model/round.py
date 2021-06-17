@@ -19,7 +19,7 @@ class Round:
         """  return the indexes of the players according to their points and rank
 
         Returns:
-        - List of index_player according to their points and rank
+          List of index_player according to their points and rank
           [ index_player_y, index_player_z, ....]
         """
         index_player_by_point_by_rank = list()
@@ -38,7 +38,7 @@ class Round:
         """ return dictionary index_players with total game points
 
          Returns:
-        - dictionary index_player: total_points_game
+          dictionary index_player: total_points_game
           { index_player_x: total_points_game, index_player_y: total_points_game ....}
         """
         index_players_total_points = dict()
@@ -57,7 +57,7 @@ class Round:
              and the indexes of the players having these points sorted by points
 
         Returns:
-        - pairs list of tuples
+          pairs list of tuples
           [( pointx , [index player, index player, ....]), ( pointy , [index player, index player, ....])]
         """
         point_index_players = dict()
@@ -73,7 +73,7 @@ class Round:
         """ Get all pairs (match) in the tournament
 
         Returns:
-        - pairs list of pair
+          pairs list of pair
         """
         pair = []
         for turn in rounds:
@@ -88,17 +88,13 @@ class Round:
             else false
 
         Attrs:
-        - rounds (list): rounds of tournament
-        - pair (tuple of list):  match
+          rounds (list): rounds of tournament
+          pair (tuple of list):  match
 
         Returns:
-        - Boolean
+          Boolean
         """
         all_pair = Round.get_all_pairs(rounds)
         if pair not in all_pair:
             return True
         return False
-
-
-if __name__ == "__main__":
-    pass

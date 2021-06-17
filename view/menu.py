@@ -66,7 +66,7 @@ class Menu:
         """ Clean console
 
         Returns:
-        - none
+          none
         """
         os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -74,10 +74,10 @@ class Menu:
         """ Display menu
 
         Attrs:
-        - name_menu (str):  name of menu
+          name_menu (str):  name of menu
 
         Returns:
-        - print menu
+          print menu
         """
         s = ""
         for text in getattr(self, str(name_menu)):
@@ -91,11 +91,11 @@ class Menu:
             if player is instance display player
             if player list of instances display players
         Attrs:
-        - player (list instance):  list instance player
-        - title (str) : title
+          player (list instance):  list instance player
+          title (str) : title
 
         Returns:
-        - print/display info player
+          print/display info player
         """
         menu = "-".center(cls.MAX_LENGTH, '-') + "\n"
         if title:
@@ -125,13 +125,13 @@ class Menu:
         """ Display Tournament
 
         Attrs:
-        - tournament (instance):  instance tournament
-        - players (instance) : list instances players
-        - index_player_and_points  (dictionary):
+          tournament (instance):  instance tournament
+          players (instance) : list instances players
+          index_player_and_points  (dictionary):
               { index_player_x: total_points_game, index_player_y: total_points_game ....}
 
         Returns:
-        - print/display info player
+          print/display info player
         """
         self.clean()
         s = " Tournament Description ".center(self.MAX_LENGTH, '=')+"\n"
@@ -173,10 +173,10 @@ class Menu:
         """ Display start_round
 
         Attrs:
-        - nbr_round (int):  number of round
+          nbr_round (int):  number of round
 
         Returns:
-        - print/display menu start round
+          print/display menu start round
         """
         s = "=".center(cls.MAX_LENGTH, '=')+"\n"
         s += "[14] Enter the results of the matches of the Round "+str(nbr_round)+"\n"
@@ -189,10 +189,10 @@ class Menu:
         """ Print resume tournament
 
         Attrs:
-        - tournaments (list instance):  instances tournaments
+           tournaments (list instance):  instances tournaments
 
         Returns:
-            - print/display resume tournament
+           print/display resume tournament
         """
         s = " Tournament List ".center(cls.MAX_LENGTH, '=')+"\n"
         s += "  Name".ljust(cls.NAME_LENGTH)
@@ -249,11 +249,11 @@ class Menu:
         """ check input param if date return date  else ask again date
 
         Attrs:
-         - message (str) : Question that will be asked of the user
-         - param (str) : Delimiter to separate days months years
+          message (str) : Question that will be asked of the user
+          param (str) : Delimiter to separate days months years
 
         Returns:
-         - returns the date in the format  dd/mm/yyyy
+          returns the date in the format  dd/mm/yyyy
         """
         while True:
             try:
